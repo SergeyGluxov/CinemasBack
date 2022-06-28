@@ -15,13 +15,12 @@
 @section('content')
     <section class="content">
         <div id="app">
-            <example-component></example-component>
+            <content-table-component></content-table-component>
         </div>
     </section>
 @stop
 
 
 @section('js')
-    <script> console.log('Hi!'); </script>
     <script src="{{ mix('js/app.js') }}"></script>
 @stop
