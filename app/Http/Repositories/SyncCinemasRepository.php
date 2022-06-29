@@ -47,6 +47,7 @@ class SyncCinemasRepository
             $contentStore->country = Helper::getCountryIvi($item['country']);
             $contentStore->duration = $item['localizations'][0]['duration'];
             $contentStore->kinopoisk_id = $contentItem['kp_id'];
+            $contentStore->poster = $item['posters'][0]['url'];
             foreach ($item['categories'] as $type) {
                 $typeContent = TypeContent::where('title', Helper::getTypeContent($type))->first();
                 if (!empty($typeContent)) {

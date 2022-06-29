@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/content', [App\Http\Controllers\HomeController::class, 'content'])->name('content');
+Route::get('/admin/contents', [AdminController::class,'getContents']);
+Route::get('/admin/contents/{id}', [AdminController::class,'getContent']);
 
 Auth::routes();
 
