@@ -16,6 +16,7 @@ class ContentResource extends JsonResource
             'restrict' =>$this->restrict,
             'year' =>$this->year,
             'country' =>$this->country,
+            'kinopoisk_id' =>$this->kinopoisk_id,
             'duration' =>$this->duration,
             'poster' =>$this->poster,
             'type_content' => new TypeContentResource($this->typeContent('title')->firstOrFail()),

@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <!-- Page Content -->
-       
+
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-3">
                 <img id="poster" v-bind:src="content.poster" >
@@ -10,7 +10,9 @@
             </div>
             <div class="col-lg-9 col-md-9 col-xs-9">
                 <h1><b>{{content.title}}</b></h1>
+                <h4><b>Кинопоиск ID:</b> {{content.kinopoisk_id}}</h4>
                 <h4><b>Год:</b> {{content.year}}</h4>
+                <h4><b>Возрастное:</b> {{content.restrict}}+</h4>
                 <h4><b>Рейтинг:</b> {{content.rating}}</h4>
                 <h4><b>Жанры:</b> <a v-for="col in content.genres" href="#"
                                      class="badge badge-primary">{{col.title}}</a></h4>

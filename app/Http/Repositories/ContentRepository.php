@@ -62,7 +62,7 @@ class ContentRepository
     public function syncIviFilm()
     {
         $client = new Client();
-        $response = $client->get('https://api2.ivi.ru/mobileapi/videoinfo/v7/?id=419192&fields=id%2Ctitle%2Cfake%2Cpreorderable%2Chru%2Ccontent_paid_types%2Csubscription_names%2Ccompilation_hru%2Ckind%2Cadditional_data%2Crestrict%2Chd_available%2Chd_available_all%2C3d_available%2C3d_available_all%2Cuhd_available%2Cuhd_available_all%2Chdr10_available%2Chdr10_available_all%2Cdv_available%2Cdv_available_all%2Cfullhd_available%2Cfullhd_available_all%2Chdr10plus_available%2Chdr10plus_available_all%2Chas_5_1%2Cshields%2Civi_pseudo_release_date%2Cartists%2Cbudget%2Ccategories%2Ccountry%2Cdescription%2Csynopsis%2Cduration%2Cduration_minutes%2Cgenres%2Cgross_russia%2Cgross_usa%2Cgross_world%2Cimdb_rating%2Civi_rating_10%2Ckp_rating%2Crating%2Cseason%2Corig_title%2Cyear%2Cyears%2Cepisode%2Csubsites_availability%2Csubtitles%2Ccompilation%2Ccompilation_title%2Cdrm_only%2Chas_awards%2Cused_to_be_paid%2Civi_release_date%2Csharing_disabled%2Civi_rating_10_count%2Chas_comments%2Chas_reviews%2Clocalizations%2Cbest_watch_before%2Cthumbs%2Cposters&app_version=870&session=ef75c6824682118185663737_1670526595-09QR1b1flUUV3rsLeQstITw&session_data=eyJ1aWQiOjQ2ODIxMTgxODU2NjM3Mzd9.YqD0BA.Mne1AYKjiS-A-TdZcKYB16jIv8k');
+        $response = $client->get('https://api2.ivi.ru/mobileapi/videoinfo/v7/?id=419192&fields=id%2Ctitle%2Cfake%2Cpreorderable%2Chru%2Ccontent_paid_types%2Csubscription_names%2Ccompilation_hru%2Ckind%2Cadditional_data%2Crestrict%2Chd_available%2Chd_available_all%2C3d_available%2C3d_available_all%2Cuhd_available%2Cuhd_available_all%2Chdr10_available%2Chdr10_available_all%2Cdv_available%2Cdv_available_all%2Cfullhd_available%2Cfullhd_available_all%2Chdr10plus_available%2Chdr10plus_available_all%2Chas_5_1%2Cshields%2Civi_pseudo_release_date%2Cartists%2Cbudget%2Ccategories%2Ccountry%2Cdescription%2Csynopsis%2Cduration%2Cduration_minutes%2Cgenres%2Cgross_russia%2Cgross_usa%2Cgross_world%2Cimdb_rating%2Civi_rating_10%2Ckp_rating%2Crating%2Cseason%2Corig_title%2Cyear%2Cyears%2Cepisode%2Csubsites_availability%2Csubtitles%2Ccompilation%2Ccompilation_title%2Cdrm_only%2Chas_awards%2Cused_to_be_paid%2Civi_release_date%2Csharing_disabled%2Civi_rating_10_count%2Chas_comments%2Chas_reviews%2Clocalizations%2Cbest_watch_before%2Cthumbs%2Cposters%2Ckp_id&app_version=870&session=ef75c6824682118185663737_1670526595-09QR1b1flUUV3rsLeQstITw&session_data=eyJ1aWQiOjQ2ODIxMTgxODU2NjM3Mzd9.YqD0BA.Mne1AYKjiS-A-TdZcKYB16jIv8k');
         $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
         $item = $jsonFormattedResult['result'];
         dd($item);
@@ -79,6 +79,7 @@ class ContentRepository
         $contentStore->country = 2019;
         $contentStore->duration = $item['localizations'][0]['duration'];
         $contentStore->poster = $item['posters'][0]['url'];
+        $contentStore->kinopoisk_id= $request->get('kp_id');
         $contentStore->type_content_id= 1;
         $contentStore->save();
 
