@@ -1,9 +1,7 @@
 <template>
     <div class="container-fluid">
         <!-- Page Content -->
-        <a v-for="col in content" v-bind:href="'/admin/contents/'+col.id">
-            <img v-bind:src="col.poster" class="col-lg-2 col-md-2 col-xs-2 thumb">
-        </a>
+        <h1>PAGE FEEDS</h1>
     </div>
 
 </template>

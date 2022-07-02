@@ -255,14 +255,19 @@ return [
         ],
         ['header' => 'account_settings'],
         [
-            'text' => 'profile',
+            'text' => 'Пользователи',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Content',
+            'text' => 'Все фильмы',
             'url'  => '/admin/contents',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-film',
+        ],
+        [
+            'text' => 'Подборки',
+            'url'  => '/admin/feeds',
+            'icon' => 'fas fa-fw fa-list',
         ],
         [
             'text' => 'change_password',

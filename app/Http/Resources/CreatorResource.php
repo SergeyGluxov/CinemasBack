@@ -10,6 +10,7 @@ class CreatorResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'kinopoisk_id' => $this->kinopoisk_id,
             'name' => $this->name,
             'eng_name' => $this->eng_name,
             'avatar' => $this->avatar

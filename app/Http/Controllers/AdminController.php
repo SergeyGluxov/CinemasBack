@@ -23,4 +23,9 @@ class AdminController extends Controller
         return view('admin/content/content', compact('id', 'id'));
     }
 
+    public function getFeeds()
+    {
+        return view('admin/feed/all');
+    }
+
 }

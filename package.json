@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "babel-preset-es2015": "^6.24.1",
-        "moment": "^2.29.3"
+        "moment": "^2.29.3",
+        "vue-horizontal": "^1.0.2"
     }
 }

@@ -9,13 +9,13 @@
 @stop
 
 @section('content_header')
-    <h1>Все фильмы</h1>
+    <h1>Подборки</h1>
 @stop
 
 @section('content')
     <section class="content">
         <div id="app">
-            <content-table-component></content-table-component>
+            <feed-table-component></feed-table-component>
         </div>
     </section>
 @stop
