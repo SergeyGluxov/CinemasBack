@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 use App\Http\Resources\CreatorResource;
 use App\Models\Creator;
+use App\Models\TypeContent;
 use Illuminate\Http\Request;
 
 class CreatorRepository
@@ -50,5 +51,9 @@ class CreatorRepository
         $creatorDestroy = Creator::findOrFail($id);
         if ($creatorDestroy->delete())
             return response('Успешно удалено!', 200);
+    }
+
+    public function getByName($name){
+        return Creator::where('name', $name)->first();
     }
 }

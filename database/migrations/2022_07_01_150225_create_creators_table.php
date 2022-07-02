@@ -14,12 +14,12 @@ class CreateCreatorsTable extends Migration
     public function up()
     {
         Schema::create('creators', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name');
             $table->string('eng_name')->nullable();
             $table->integer('kinopoisk_id')->nullable();
             $table->integer('ivi_id')->nullable();
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->string('avatar')->nullable();
             $table->timestamps();
         });

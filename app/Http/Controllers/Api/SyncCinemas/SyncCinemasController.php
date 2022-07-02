@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\SyncCinemas;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\ContentCreatorRepository;
 use App\Http\Repositories\ContentGenreRepository;
 use App\Http\Repositories\ContentRepository;
 use App\Http\Repositories\CreatorRepository;
@@ -20,12 +21,14 @@ class SyncCinemasController extends Controller
     protected $genreRepository;
     protected $typeContentRepository;
     protected $contentGenreRepository;
+    protected $contentCreatorRepository;
 
     public function __construct(CreatorRepository $creatorRepository,
                                 ContentRepository $contentRepository,
                                 GenreRepository $genreRepository,
                                 TypeContentRepository $typeContentRepository,
-                                ContentGenreRepository $contentGenreRepository
+                                ContentGenreRepository $contentGenreRepository,
+                                ContentCreatorRepository $contentCreatorRepository
     )
     {
         $this->creatorRepository = $creatorRepository;
@@ -33,6 +36,7 @@ class SyncCinemasController extends Controller
         $this->genreRepository = $genreRepository;
         $this->typeContentRepository = $typeContentRepository;
         $this->contentGenreRepository = $contentGenreRepository;
+        $this->contentCreatorRepository = $contentCreatorRepository;
     }
 
     public function syncIviFilm()
@@ -93,6 +97,39 @@ class SyncCinemasController extends Controller
                 }
             }
 
+            //Забираем актеров и прочих
+            $client = new Client();
+            $responseCreators = $client->get('https://api2.ivi.ru/mobileapi/video/persons/v5/?id=' . $contentItem['id']);
+            $creatorsRest = json_decode($responseCreators->getBody()->getContents(), true)['result'];
+            foreach ($creatorsRest as $typeCreator) {
+                foreach ($typeCreator['persons'] as $person) {
+                    if (!empty($person['name'])) {
+                        $creator = $this->creatorRepository->getByName($person['name']);
+                        if (empty($creator)) {
+                            $storeCreator = Request::create('POST');
+                            $storeCreator->request->add(['name' => $person['name']]);
+                            $storeCreator->request->add(['eng_name' => $person['eng_title']]);
+                            $storeCreator->request->add(['kinopoisk_id' => $person['kp_id']]);
+                            $storeCreator->request->add(['bio' => $person['bio']]);
+                            $avatar = null;
+                            foreach ($person['images'] as $img) {
+                                $avatar = $img['path'];
+                            }
+                            $storeCreator->request->add(['avatar' => $avatar]);
+                            $this->creatorRepository->store($storeCreator);
+                            $creator = $this->creatorRepository->getByName($person['name']);
+                        }
+                        //Чтоб не было дублей при обновлении связи контента и актеров
+                        $isExist = $this->contentCreatorRepository->isDepencyExist($item['title'], $creator->id);
+                        if (!$isExist) {
+                            $storeContentCreator = Request::create('POST');
+                            $storeContentCreator->request->add(['content_id' => $content->id]);
+                            $storeContentCreator->request->add(['creator_id' => $creator->id]);
+                            $this->contentCreatorRepository->store($storeContentCreator);
+                        }
+                    }
+                }
+            }
             $a++;
         }
         return redirect('/home');
@@ -100,6 +137,16 @@ class SyncCinemasController extends Controller
 
     public function syncMoreFilms()
     {
+        //Забираем актеров и прочих
+        $client = new Client();
+        $responseCreators = $client->get('https://api2.ivi.ru/mobileapi/video/persons/v5/?id=471475');
+        $creatorsRest = json_decode($responseCreators->getBody()->getContents(), true)['result'];
+        foreach ($creatorsRest as $typeCreator) {
+            foreach ($typeCreator['persons'] as $person) {
+                dd($person);
+            }
+        }
+
         return $this->syncCiemasRepository->syncMoreFilms();
     }
 
