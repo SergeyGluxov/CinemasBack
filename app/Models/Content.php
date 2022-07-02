@@ -15,4 +15,9 @@ class Content extends Model
     {
         return $this->belongsToMany('App\Models\Genre', 'contents_genres', 'content_id', 'genre_id');
     }
+
+    public function creators()
+    {
+        return $this->belongsToMany('App\Models\Creator', 'contents_creators', 'content_id', 'creator_id');
+    }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Content\ContentController;
+use App\Http\Controllers\Api\Content\ContentCreatorController;
 use App\Http\Controllers\Api\Content\ContentGenreController;
 use App\Http\Controllers\Api\Content\FeedContentController;
 use App\Http\Controllers\Api\Content\GenreController;
@@ -48,6 +49,7 @@ Route::group(['middleware'=>'auth:api'], function () {
     Route::resource('/content', ContentController::class);
     Route::resource('/genre', GenreController::class);
     Route::resource('/contentGenre', ContentGenreController::class);
+    Route::resource('/contentCreator', ContentCreatorController::class);
     Route::resource('/feedContent', FeedContentController::class);
     Route::resource('/feed', FeedController::class);
 

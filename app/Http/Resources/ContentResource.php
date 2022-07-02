@@ -20,7 +20,8 @@ class ContentResource extends JsonResource
             'duration' =>$this->duration,
             'poster' =>$this->poster,
             'type_content' => new TypeContentResource($this->typeContent('title')->firstOrFail()),
-            'genres' => GenreResource::collection($this->genres)
+            'genres' => GenreResource::collection($this->genres),
+            'creators' => CreatorResource::collection($this->creators)
         ];
     }
 }
