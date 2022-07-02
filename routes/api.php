@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Content\ContentGenreController;
 use App\Http\Controllers\Api\Content\FeedContentController;
 use App\Http\Controllers\Api\Content\GenreController;
 use App\Http\Controllers\Api\Content\TypeContentController;
+use App\Http\Controllers\Api\Creators\CreatorsController;
 use App\Http\Controllers\Api\Feed\FeedController;
 use App\Http\Controllers\Api\Page\PageController;
 use App\Http\Controllers\Api\Page\PageFeedController;
@@ -52,5 +53,8 @@ Route::group(['middleware'=>'auth:api'], function () {
 
     Route::resource('/page', PageController::class);
     Route::resource('/pageFeed', PageFeedController::class);
+
+    Route::resource('/creator', CreatorsController::class);
+
 
 });

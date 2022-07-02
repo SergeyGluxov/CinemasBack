@@ -2,8 +2,10 @@
 
 namespace App\Http\Repositories;
 use App\Http\Resources\TypeContentResource;
+use App\Models\Content;
 use App\Models\TypeContent;
 use Illuminate\Http\Request;
+use MongoDB\BSON\Type;
 
 class TypeContentRepository
 {
@@ -45,5 +47,9 @@ class TypeContentRepository
         $typeContentDestroy = TypeContent::findOrFail($id);
         if ($typeContentDestroy->delete())
             return response('Успешно удалено!', 200);
+    }
+
+    public function findFromTitle($title){
+        return TypeContent::where('title', $title)->first();
     }
 }

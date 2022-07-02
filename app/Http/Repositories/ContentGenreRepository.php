@@ -5,6 +5,7 @@ use App\Http\Resources\ContentGenreResource;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use App\Models\ContentsGenres;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class ContentGenreRepository
@@ -43,5 +44,20 @@ class ContentGenreRepository
         $contentGenreDestroy = ContentsGenres::findOrFail($id);
         if ($contentGenreDestroy->delete())
             return response('Успешно удалено!', 200);
+    }
+
+
+    public function isDepencyExist($title, $genreId){
+        $content = Content::where('title', $title)->first();
+        if(empty($content)){
+            return false;
+        }
+        $contentGenre = ContentsGenres::where('content_id', $content->id)
+            ->where('genre_id',$genreId)->first();
+        if(!empty($contentGenre)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

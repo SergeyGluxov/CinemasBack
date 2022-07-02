@@ -49,7 +49,19 @@ class ContentRepository
 
     public function update(Request $request, $id)
     {
-
+        $contentStore = Content::find($id);
+        $contentStore->title= $request->get('title');
+        $contentStore->description= $request->get('description');
+        $contentStore->rating= $request->get('rating');
+        $contentStore->restrict= $request->get('restrict');
+        $contentStore->year= $request->get('year');
+        $contentStore->country= $request->get('country');
+        $contentStore->duration= $request->get('duration');
+        $contentStore->type_content_id= $request->get('type_content_id');
+        $contentStore->kinopoisk_id= $request->get('kinopoisk_id');
+        $contentStore->poster= $request->get('poster');
+        $contentStore->save();
+        return response('Запись обновлена', 200);
     }
 
     public function destroy($id)
@@ -128,6 +140,12 @@ class ContentRepository
             }
         }
         return redirect('/home');
+    }
+
+
+
+    public function findFromTitle($title){
+        return Content::where('title', $title)->first();
     }
 }
 

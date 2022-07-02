@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 use App\Http\Resources\GenreResource;
 use App\Models\Genre;
+use App\Models\TypeContent;
 use Illuminate\Http\Request;
 
 class GenreRepository
@@ -46,4 +47,9 @@ class GenreRepository
         if ($genreDestroy->delete())
             return response('Успешно удалено!', 200);
     }
+
+    public function findFromTitle($title){
+        return Genre::where('title', $title)->first();
+    }
+
 }
