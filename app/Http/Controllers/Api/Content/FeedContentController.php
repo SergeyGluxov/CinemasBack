@@ -33,4 +33,9 @@ class FeedContentController extends Controller
     {
         return $this->contentGenreRepository->destroy($id);
     }
+
+    public function deleteContentFromFeed(Request $request)
+    {
+        return $this->contentGenreRepository->deleteContentFromFeed($request);
+    }
 }

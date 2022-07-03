@@ -44,4 +44,12 @@ class FeedContentRepository
         if ($contentGenreDestroy->delete())
             return response('Успешно удалено!', 200);
     }
+
+    public function deleteContentFromFeed(Request $request){
+        $deleteItem = FeedsContents::where('feed_id', $request->get('feed_id'))
+            ->where('content_id',$request->get('content_id'))->get();
+        foreach ($deleteItem as $item){
+            $item->delete();
+        }
+    }
 }

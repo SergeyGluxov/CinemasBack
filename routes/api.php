@@ -35,22 +35,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['cors', 'json.response']], function () {
 
     Route::post('/login', LoginController::class)->name('login.api');
-    Route::post('/register',RegisterController::class)->name('register.api');
-    Route::post('/logout',LogoutController::class)->name('logout.api');
+    Route::post('/register', RegisterController::class)->name('register.api');
+    Route::post('/logout', LogoutController::class)->name('logout.api');
 });
 
 
-Route::group(['middleware'=>'auth:api'], function () {
+Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::post('/syncIviFilm', [SyncCinemasController::class,'syncIviFilm']);
-    Route::post('/syncMoreFilms', [SyncCinemasController::class,'syncMoreFilms']);
+    Route::post('/syncIviFilm', [SyncCinemasController::class, 'syncIviFilm']);
+    Route::post('/syncMoreFilms', [SyncCinemasController::class, 'syncMoreFilms']);
     Route::resource('/type', TypeContentController::class);
     Route::resource('/content', ContentController::class);
     Route::resource('/genre', GenreController::class);
     Route::resource('/contentGenre', ContentGenreController::class);
     Route::resource('/contentCreator', ContentCreatorController::class);
     Route::resource('/feedContent', FeedContentController::class);
+    Route::post('/deleteContentFromFeed', [FeedContentController::class, 'deleteContentFromFeed']);
     Route::resource('/feed', FeedController::class);
 
     Route::resource('/page', PageController::class);
