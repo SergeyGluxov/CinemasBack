@@ -11,7 +11,7 @@ class FeedResource extends JsonResource
         return [
             'id' => $this->id,
             'title' =>$this->title,
-            'contents'=>ContentResource::collection($this->contents)
+            'contents'=>ContentShortResource::collection($this->contents)
         ];
     }
 }

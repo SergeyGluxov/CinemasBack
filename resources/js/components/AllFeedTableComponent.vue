@@ -2,6 +2,17 @@
     <div class="container-fluid">
         <h1><b>{{page.title}}</b></h1>
 
+        <alert-box>
+            <template v-slot:name="name"><h4>Редактирование подборки</h4></template>
+            <label>Введите ID: </label>
+            <input class="form-control" v-model="contentId" placeholder="">
+            <template v-slot:footer="footer">
+                <button type="button" class="btn btn-success col-lg-12 col-md-12 col-xs-12" data-dismiss="modal"
+                        @click="storeContentToFeed(editFeed.id,contentId)">Добавить
+                </button>
+            </template>
+        </alert-box>
+
         <div v-for="feed in page.feeds">
             <h2>{{feed.title}}</h2>
             <div class="dropdown">
@@ -20,11 +31,13 @@
             <vue-horizontal ref="horizontal" class="horizontal" style="margin-top: 10px" :button="false"
                             @scroll-debounce="onScrollDebounce">
                 <div class="item" v-for="item in feed.contents" :key="item.id">
-                    <div class="image" :style="{background: `url(${item.poster})`}">
-                        <div class="overlay">
-                            <div class="text">{{ item.title }}</div>
+                    <a v-bind:href="'/admin/contents/'+item.id">
+                        <div class="image" :style="{background: `url(${item.poster})`}">
+                            <div class="overlay">
+                                <div class="text">{{ item.title }}</div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                     <div class="dropdown">
 
                         <button class="btn btn-secondary dropdown-toggle col-lg-12 col-md-12 col-xs-12" type="button"
@@ -45,27 +58,7 @@
             <hr/>
         </div>
 
-        <div class="modal fade" id="reject" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Редактирование подборки</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Введите ID контента: </label>
-                            <input v-model="contentId" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success col-lg-12 col-md-12 col-xs-12" data-dismiss="modal"
-                                @click="storeContentToFeed(editFeed.id,contentId)">Добавить
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
 </template>

@@ -11,15 +11,10 @@ class ContentShortResource extends JsonResource
         return [
             'id' => $this->id,
             'title' =>$this->title,
-            'description' =>$this->description,
             'rating' =>$this->rating,
             'restrict' =>$this->restrict,
             'year' =>$this->year,
-            'country' =>$this->country,
-            'duration' =>$this->duration,
             'poster' =>$this->poster,
-            'type_content' => new TypeContentResource($this->typeContent('title')->firstOrFail()),
-            'genres' => GenreResource::collection($this->genres)
         ];
     }
 }
