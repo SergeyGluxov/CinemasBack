@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Content\ContentCreatorController;
 use App\Http\Controllers\Api\Content\ContentGenreController;
 use App\Http\Controllers\Api\Content\FeedContentController;
 use App\Http\Controllers\Api\Content\GenreController;
+use App\Http\Controllers\Api\Content\SearchController;
 use App\Http\Controllers\Api\Content\TypeContentController;
 use App\Http\Controllers\Api\Creators\CreatorsController;
 use App\Http\Controllers\Api\Feed\FeedController;
@@ -58,6 +59,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('/pageFeed', PageFeedController::class);
 
     Route::resource('/creator', CreatorsController::class);
+
+    Route::post('/search', [SearchController::class, 'search']);
 
 
 });
