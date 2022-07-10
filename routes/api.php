@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Creators\CreatorsController;
 use App\Http\Controllers\Api\Feed\FeedController;
 use App\Http\Controllers\Api\Page\PageController;
 use App\Http\Controllers\Api\Page\PageFeedController;
+use App\Http\Controllers\Api\Release\ReleaseController;
 use App\Http\Controllers\Api\SyncCinemas\SyncCinemasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('/pageFeed', PageFeedController::class);
 
     Route::resource('/creator', CreatorsController::class);
+
+    Route::resource('/release', ReleaseController::class);
 
     Route::post('/search', [SearchController::class, 'search']);
 
