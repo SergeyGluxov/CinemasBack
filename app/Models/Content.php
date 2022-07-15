@@ -20,4 +20,10 @@ class Content extends Model
     {
         return $this->belongsToMany('App\Models\Creator', 'contents_creators', 'content_id', 'creator_id');
     }
+
+
+    public function releases()
+    {
+        return $this->hasMany(Release::class);
+    }
 }

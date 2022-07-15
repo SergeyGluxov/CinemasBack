@@ -35,4 +35,11 @@ class ReleaseController extends Controller
     {
         return $this->releaseRepository->destroy($id);
     }
+
+
+    public function getContentRelease(Request $request)
+    {
+        return $this->releaseRepository->getContentRelease($request);
+    }
+
 }

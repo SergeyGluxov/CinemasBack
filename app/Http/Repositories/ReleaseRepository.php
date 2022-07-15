@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Http\Resources\ReleaseResource;
+use App\Models\Content;
 use App\Models\Release;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,7 @@ class ReleaseRepository
     public function store(Request $request)
     {
         $releaseStore = new Release();
+        $releaseStore->content_id = $request->get('content_id');
         $releaseStore->cinema = $request->get('cinema');
         $releaseStore->type = $request->get('type');
         $releaseStore->url = $request->get('url');
@@ -41,6 +43,7 @@ class ReleaseRepository
     public function update(Request $request, $id)
     {
         $releaseStore = Release::find($id);
+        $releaseStore->content_id = $request->get('content_id');
         $releaseStore->cinema = $request->get('cinema');
         $releaseStore->type = $request->get('type');
         $releaseStore->url = $request->get('url');
@@ -53,6 +56,12 @@ class ReleaseRepository
         $releaseDestroy = Release::findOrFail($id);
         if ($releaseDestroy->delete())
             return response('Успешно удалено!', 200);
+    }
+
+    public function getContentRelease(Request $request){
+        $content = Content::where('id', $request->get('content_id'))->first();
+        ReleaseResource::withoutWrapping();
+        return ReleaseResource::collection($content->releases);
     }
 
 }

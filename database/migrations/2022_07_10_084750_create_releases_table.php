@@ -14,7 +14,11 @@ class CreateReleasesTable extends Migration
     public function up()
     {
         Schema::create('releases', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->integer('content_id')->unsigned();
+            $table->foreign('content_id')
+                ->references('id')->on('contents')
+                ->onDelete('cascade');
             $table->string('cinema');
             $table->string('type');
             $table->text('url')->nullable();;
