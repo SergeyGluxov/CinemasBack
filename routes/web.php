@@ -25,6 +25,7 @@ Route::get('/content', [App\Http\Controllers\HomeController::class, 'content'])-
 Route::get('/admin/contents', [AdminController::class,'getContents']);
 Route::get('/admin/contents/{id}', [AdminController::class,'getContent']);
 Route::get('/admin/feeds', [AdminController::class,'getFeeds']);
+Route::get('/admin/feed/{id}', [AdminController::class,'getFeed']);
 
 Auth::routes();
 

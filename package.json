@@ -26,8 +26,11 @@
     "dependencies": {
         "@kouts/vue-modal": "^2.1.8",
         "babel-preset-es2015": "^6.24.1",
+        "laravel-vue-pagination": "^3.0.0",
         "moment": "^2.29.3",
         "vue-horizontal": "^1.0.2",
-        "vue-simple-context-menu": "^4.0.4"
+        "vue-plain-pagination": "^0.3.0",
+        "vue-simple-context-menu": "^4.0.4",
+        "vuejs-paginate-next": "^1.0.2"
     }
 }

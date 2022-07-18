@@ -8,6 +8,7 @@ class Feed extends Model
 {
     public function contents()
     {
-        return $this->belongsToMany('App\Models\Content', 'feeds_contents',  'feed_id','content_id');
+        return $this->belongsToMany('App\Models\Content', 'feeds_contents',  'feed_id','content_id')
+            ->withPivot('position');
     }
 }

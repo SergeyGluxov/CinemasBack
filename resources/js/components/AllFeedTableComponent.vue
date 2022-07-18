@@ -13,8 +13,8 @@
             </template>
         </alert-box>
 
-        <div v-for="feed in page.feeds">
-            <h2>{{feed.title}}</h2>
+        <div v-for="feed in feeds">
+            <h2><a v-bind:href="'/admin/feed/'+feed.id">{{feed.title}}</a></h2>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button"
                         id="dropdownFeedMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -28,9 +28,9 @@
                 </div>
             </div>
 
-            <vue-horizontal ref="horizontal" class="horizontal" style="margin-top: 10px" :button="false"
+            <vue-horizontal ref="horizontal" class="horizontal" style="margin-top: 10px" :button-between="false"
                             @scroll-debounce="onScrollDebounce">
-                <div class="item" v-for="item in feed.contents" :key="item.id">
+                <div class="item" v-for="item in feed.results.contents" :key="item.id">
                     <a v-bind:href="'/admin/contents/'+item.id">
                         <div class="image" :style="{background: `url(${item.poster})`}">
                             <div class="overlay">
@@ -55,6 +55,14 @@
                     </div>
                 </div>
             </vue-horizontal>
+
+            <!--<div class="pagination">
+                <div class="dot" :class="{current: i - 1 === index}" v-for="i in feed.results.pagination.total_pages"
+                     :key="i"
+                     @click="paginateFeed(feed.id, i - 1)">
+                    <div></div>
+                </div>
+            </div>-->
             <hr/>
         </div>
 
@@ -65,16 +73,25 @@
 
 <script>
     import VueHorizontal from "vue-horizontal";
+    import VPag from "vue-plain-pagination";
 
     export default {
-        components: {VueHorizontal},
+        components: {
+            VueHorizontal,
+            VPag,
+        },
         name: "AllFeedTableComponent",
         data: function () {
             return {
                 page: {},
+                feeds: [],
                 showModalPlaylist: false,
                 editFeed: {},
-                contentId: ''
+                contentId: '',
+                width: 0,
+                index: 0,
+                pages: 0,
+                currentPage: 1
             }
         },
 
@@ -82,10 +99,41 @@
             this.update();
         },
         methods: {
+            onScrollDebounce({scrollWidth, width, left}) {
+                console.log('onScrollDebounce');
+                this.width = width
+                this.index = Math.round(left / width)
+                this.pages = Math.round(scrollWidth / width)
+                console.log(this.index)
+            },
+            onPageClick(i) {
+                if (i === this.pages - 1) {
+                    console.log('paginate if - 1 ')
+                    // If last page, always scroll to last item
+                    this.$refs.horizontal.scrollToIndex(this.items.length - 1)
+                } else {
+                    console.log('paginate if - 2')
+                    this.$refs.horizontal.scrollToLeft(i * this.width)
+                }
+            },
+
+            paginateFeed: function (feedId, page) {
+                page += 1;
+                console.log('load feed ' + feedId + ' ' + 'page = ' + page);
+                axios.get('/api/feed/' + feedId + '?page=' + page).then((response) => {
+                    this.feeds.forEach((item, index) => {
+                        if (item.id === feedId) {
+                            this.feeds[index] = response.data
+                            console.log();
+                        }
+                    });
+                });
+            },
             update: function () {
                 axios.get('/api/page/1').then((response) => {
                     this.page = response.data;
-                    console.log(response.data);
+                    this.feeds = response.data.feeds
+                    console.log(this.feeds);
                 });
             },
 
@@ -108,6 +156,36 @@
         }
     }
 </script>
+
+<style scoped>
+    .pagination {
+        margin-top: 12px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dot {
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    .dot > div {
+        border-radius: 10px;
+        width: 10px;
+        height: 10px;
+        background: #33333350;
+    }
+
+    .dot:hover > div {
+        border: 1px solid black;
+        background: white;
+    }
+
+    .dot.current > div {
+        border: 3px solid black;
+        background: white;
+    }
+</style>
 
 <style scoped>
     .badge {

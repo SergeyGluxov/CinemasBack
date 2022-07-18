@@ -15,7 +15,7 @@
 @section('content')
     <section class="content">
         <div id="app">
-            <all-feed-table-component></all-feed-table-component>
+            <feed-table-component :id="{{$id}}"></feed-table-component>
         </div>
     </section>
 @stop
