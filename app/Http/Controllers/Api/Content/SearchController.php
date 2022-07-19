@@ -20,4 +20,15 @@ class SearchController extends Controller
     {
         return $this->searchRepository->search($request);
     }
+
+
+
+    public function searchByFilter(Request $request)
+    {
+        return $this->searchRepository->searchByFilter($request);
+    }
+
+
+
+
 }

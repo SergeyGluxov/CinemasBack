@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/contenteRelease', [ReleaseController::class, 'getContentRelease']);
 
     Route::post('/search', [SearchController::class, 'search']);
+    Route::post('/searchByFilter', [SearchController::class, 'searchByFilter']);
 
 
 });

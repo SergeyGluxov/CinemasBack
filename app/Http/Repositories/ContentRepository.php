@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 use App\Http\Resources\ContentResource;
+use App\Http\Resources\ContentShortCollection;
 use App\Models\Content;
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Model;
@@ -19,8 +20,7 @@ class ContentRepository
 
     public function all()
     {
-        ContentResource::withoutWrapping();
-        return ContentResource::collection(Content::all());
+        return new ContentShortCollection(Content::paginate(15));
     }
 
 
