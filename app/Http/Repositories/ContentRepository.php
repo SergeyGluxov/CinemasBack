@@ -38,7 +38,7 @@ class ContentRepository
         $contentStore->rating= $request->get('rating');
         $contentStore->restrict= $request->get('restrict');
         $contentStore->year= $request->get('year');
-        $contentStore->country= $request->get('country');
+        $contentStore->country_id= $request->get('country_id');
         $contentStore->duration= $request->get('duration');
         $contentStore->type_content_id= $request->get('type_content_id');
         $contentStore->kinopoisk_id= $request->get('kinopoisk_id');
@@ -55,7 +55,7 @@ class ContentRepository
         $contentStore->rating= $request->get('rating');
         $contentStore->restrict= $request->get('restrict');
         $contentStore->year= $request->get('year');
-        $contentStore->country= $request->get('country');
+        $contentStore->country_id= $request->get('country_id');
         $contentStore->duration= $request->get('duration');
         $contentStore->type_content_id= $request->get('type_content_id');
         $contentStore->kinopoisk_id= $request->get('kinopoisk_id');

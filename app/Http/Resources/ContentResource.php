@@ -15,7 +15,7 @@ class ContentResource extends JsonResource
             'rating' =>$this->rating,
             'restrict' =>$this->restrict,
             'year' =>$this->year,
-            'country' =>$this->country,
+            'country' =>new CountryResource($this->country),
             'kinopoisk_id' =>$this->kinopoisk_id,
             'duration' =>$this->duration,
             'poster' =>$this->poster,
