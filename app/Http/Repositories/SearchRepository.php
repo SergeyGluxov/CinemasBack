@@ -29,16 +29,16 @@ class SearchRepository
         $photoQuery = Content::query();
         foreach ($request->json()->get('genres') as $genre) {
             $photoQuery->whereHas('genres', function ($query) use ($genre) {
-                return $query->where('genres.id', $genre);
+                return $query->orWhere('genres.id', $genre);
             });
         }
 
-        foreach ($request->json()->get('countries') as $country) {
-            $photoQuery->where('country', $country);
-        }
+         foreach ($request->json()->get('countries') as $country) {
+              $photoQuery->orWhere('country_id', $country);
+         }
 
         foreach ($request->json()->get('years') as $year) {
-            $photoQuery->where('year', $year);
+            $photoQuery->orWhere('year', $year);
         }
 
         $photos = $photoQuery->get();

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Content\SearchController;
 use App\Http\Controllers\Api\Content\TypeContentController;
 use App\Http\Controllers\Api\Creators\CreatorsController;
 use App\Http\Controllers\Api\Feed\FeedController;
+use App\Http\Controllers\Api\Filter\FilterController;
 use App\Http\Controllers\Api\Page\PageController;
 use App\Http\Controllers\Api\Page\PageFeedController;
 use App\Http\Controllers\Api\Release\ReleaseController;
@@ -66,6 +67,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/search', [SearchController::class, 'search']);
     Route::post('/searchByFilter', [SearchController::class, 'searchByFilter']);
+
+    Route::get('/getFilters', [FilterController::class, 'getFilters']);
 
 
 });
