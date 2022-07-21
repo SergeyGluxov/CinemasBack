@@ -2,6 +2,10 @@
 
 namespace App\Http\Repositories;
 
+use App\Http\Resources\ContentCollection;
+use App\Http\Resources\ContentPaginationCollection;
+use App\Http\Resources\ContentShortCollection;
+use App\Http\Resources\ContentShortPaginationResource;
 use App\Http\Resources\ContentShortResource;
 use App\Models\Content;
 use Illuminate\Http\Request;
@@ -27,23 +31,60 @@ class SearchRepository
     public function searchByFilter(Request $request)
     {
         $photoQuery = Content::query();
-        foreach ($request->json()->get('genres') as $genre) {
-            $photoQuery->whereHas('genres', function ($query) use ($genre) {
-                return $query->orWhere('genres.id', $genre);
-            });
-        }
 
-         foreach ($request->json()->get('countries') as $country) {
-              $photoQuery->orWhere('country_id', $country);
-         }
+
+        $photoQuery->where(function ($photoQuery) use ($request) {
+            $photoQuery
+                ->whereHas('genres', function ($photoQuery) use ($request) {
+                    $a = 0;
+                    foreach ($request->json()->get('genres') as $genre) {
+                        if ($a < 1)
+                            $photoQuery->where('genres.id', '=', $genre);
+                        else
+                            $photoQuery->orWhere('genres.id', '=', $genre);
+                        $a++;
+                    }
+                })
+                ->where(function ($photoQuery) use ($request) {
+                    foreach ($request->json()->get('countries') as $country) {
+                        $photoQuery->orWhere('country_id', $country);
+                    }
+                })
+                ->where(function ($photoQuery) use ($request) {
+                    foreach ($request->json()->get('years') as $year) {
+                        $photoQuery->orWhere('year', $year);
+                    }
+                });
+            return $photoQuery;
+        });
+       // dd($photoQuery->toSql());
+        $photos = $photoQuery->paginate(10);
+        return new ContentShortCollection($photos);
+
+        $photoQuery->whereHas('genres', function ($photoQuery) use ($request) {
+            $a = 0;
+            foreach ($request->json()->get('genres') as $genre) {
+                if ($a < 1)
+                    $photoQuery->where('genres.id', '=', $genre);
+                else
+                    $photoQuery->orWhere('genres.id', '=', $genre);
+                $a++;
+            }
+            return $photoQuery;
+        });
+
+        foreach ($request->json()->get('countries') as $country) {
+            $photoQuery->orWhere('country_id', $country);
+        }
 
         foreach ($request->json()->get('years') as $year) {
             $photoQuery->orWhere('year', $year);
         }
 
-        $photos = $photoQuery->get();
-
-        return ContentShortResource::collection($photos);
+        dd($photoQuery->toSql());
+        $photos = $photoQuery->paginate(10);
+        return new ContentShortCollection($photos);
+        return new ContentPaginationCollection($photos);
     }
 }
 
