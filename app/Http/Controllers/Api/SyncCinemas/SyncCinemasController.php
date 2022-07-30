@@ -10,6 +10,7 @@ use App\Http\Repositories\ContentGenreRepository;
 use App\Http\Repositories\ContentRepository;
 use App\Http\Repositories\CreatorRepository;
 use App\Http\Repositories\GenreRepository;
+use App\Http\Repositories\ReleaseRepository;
 use App\Http\Repositories\TypeContentRepository;
 use App\Models\Country;
 use GuzzleHttp\Client;
@@ -23,13 +24,15 @@ class SyncCinemasController extends Controller
     protected $typeContentRepository;
     protected $contentGenreRepository;
     protected $contentCreatorRepository;
+    protected $releaseRepository;
 
     public function __construct(CreatorRepository $creatorRepository,
                                 ContentRepository $contentRepository,
                                 GenreRepository $genreRepository,
                                 TypeContentRepository $typeContentRepository,
                                 ContentGenreRepository $contentGenreRepository,
-                                ContentCreatorRepository $contentCreatorRepository
+                                ContentCreatorRepository $contentCreatorRepository,
+                                ReleaseRepository $releaseRepository
     )
     {
         $this->creatorRepository = $creatorRepository;
@@ -38,6 +41,7 @@ class SyncCinemasController extends Controller
         $this->typeContentRepository = $typeContentRepository;
         $this->contentGenreRepository = $contentGenreRepository;
         $this->contentCreatorRepository = $contentCreatorRepository;
+        $this->releaseRepository = $releaseRepository;
     }
 
     public function syncIviFilm()
@@ -136,6 +140,23 @@ class SyncCinemasController extends Controller
                     }
                 }
             }
+
+            //Забираем или обновляем релиз
+            $isReleaseFound = false;
+            foreach ($content->releases as $item) {
+                if ($item->cinema == "IVI") {
+                    $isReleaseFound = true;
+                }
+            }
+            if (!$isReleaseFound) {
+                $storeRelease = Request::create('POST');
+                $storeRelease->request->add(['content_id' => $content->id]);
+                $storeRelease->request->add(['cinema' => 'IVI']);
+                $storeRelease->request->add(['type' => 'web']);
+                $storeRelease->request->add(['url' => 'https://www.ivi.ru/player/video/?id=' . $item['id']]);
+                $this->releaseRepository->store($storeRelease);
+            }
+
             $a++;
         }
         return redirect('/home');
