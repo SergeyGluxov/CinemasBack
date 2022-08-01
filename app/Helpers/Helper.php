@@ -175,6 +175,18 @@ class Helper
         }
     }
 
+    public static function getTypeContentMore(string $value)
+    {
+        switch ($value) {
+            case 'MOVIE':
+                return "Фильм";
+            case 'Serial':
+                return "Сериал";
+            default:
+                return "Undefined";
+        }
+    }
+
     public static function getGenreIvi(int $value)
     {
         switch ($value) {
@@ -214,6 +226,64 @@ class Helper
                 return "Спорт";
             case 94:
                 return "Боевики";
+            case 97:
+                return "Детективы";
+            case 105:
+                return "Драмы";
+            case 263:
+                return "Катастрофы";
+            case 107:
+                return "Мелодрамы";
+            case 198:
+                return "Семейные";
+            case 127:
+                return "Триллеры";
+            case 204:
+                return "Фэнтези";
+            default:
+                return "Undefined";
+        }
+    }
+
+    public static function getGenreMore(int $value)
+    {
+        switch ($value) {
+            case 113:
+                return "Фантастика";
+            case 225:
+                return "Вестерн";
+            case 160:
+                return "Для детей";
+            case 211:
+                return "Зарубежные";
+            case 95:
+                return "Комедии";
+            case 201:
+                return "Мистические";
+            case 101:
+                return "Приключения";
+            case 168:
+                return "Советские";
+            case 99:
+                return "Ужасы";
+            case 226:
+                return "Биография";
+            case 103:
+                return "Военные";
+            case 109:
+                return "Документальные";
+            case 192:
+                return "Исторические";
+            case 218:
+                return "Криминал";
+            case 189:
+                return "Музыкальные";
+            case 205:
+                return "Русские";
+            case 228:
+                return "Спорт";
+            case 13:
+                return "Боевик";
             case 97:
                 return "Детективы";
             case 105:

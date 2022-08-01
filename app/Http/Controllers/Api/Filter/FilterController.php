@@ -78,15 +78,10 @@ class FilterController extends Controller
             new YearsFilter(2018, "2018"),
             new YearsFilter(2020, "2020"),
             new YearsFilter(2021, "2021"),
-            new YearsFilter(2022, "2022"),
-            new YearsFilter(2023, "2023"));
+            new YearsFilter(2022, "2022"));
 
         $array = [
-            [
-                "title" => 'Страны',
-                "type" => 'countries',
-                "items" => $this->countryRepository->take(5),
-            ],
+
             [
                 "title" => 'Жанры',
                 "type" => 'genres',
@@ -96,6 +91,11 @@ class FilterController extends Controller
                 "title" => 'Года',
                 "type" => 'years',
                 "items" => $arrayYears,
+            ],
+            [
+                "title" => 'Страны',
+                "type" => 'countries',
+                "items" => $this->countryRepository->all(),
             ]
         ];
         return json_encode($array, true);

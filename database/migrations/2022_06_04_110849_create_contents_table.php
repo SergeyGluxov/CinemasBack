@@ -21,7 +21,7 @@ class CreateContentsTable extends Migration
             $table->string('restrict')->nullable();
             $table->integer('year')->nullable();
             $table->string('country')->nullable();
-            $table->integer('duration');
+            $table->integer('duration')->nullable();
             $table->integer('type_content_id')->unsigned()->index();
             $table->foreign('type_content_id')->references('id')->on('type_contents')->onDelete('cascade');
             $table->timestamps();

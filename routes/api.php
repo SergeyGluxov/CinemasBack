@@ -17,6 +17,8 @@ use App\Http\Controllers\Api\Page\PageController;
 use App\Http\Controllers\Api\Page\PageFeedController;
 use App\Http\Controllers\Api\Release\ReleaseController;
 use App\Http\Controllers\Api\SyncCinemas\SyncCinemasController;
+use App\Http\Controllers\Api\SyncCinemas\SyncMoreController;
+use App\Http\Controllers\Api\SyncCinemas\SyncPremierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +49,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::post('/syncIviFilm', [SyncCinemasController::class, 'syncIviFilm']);
-    Route::post('/syncMoreFilms', [SyncCinemasController::class, 'syncMoreFilms']);
+    Route::post('/syncMoreFilms', [SyncMoreController::class, 'syncMoreFilms']);
+    Route::post('/syncPremierFilms', [SyncPremierController::class, 'syncPremierFilms']);
     Route::resource('/type', TypeContentController::class);
     Route::resource('/content', ContentController::class);
     Route::resource('/genre', GenreController::class);
