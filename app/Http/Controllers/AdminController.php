@@ -33,4 +33,9 @@ class AdminController extends Controller
         return view('admin/feed/feed', compact('id', 'id'));
     }
 
+    public function getUsers()
+    {
+        return view('admin/user/all');
+    }
+
 }

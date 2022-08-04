@@ -75,5 +75,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/getFilters', [FilterController::class, 'getFilters']);
 
+    Route::get('/users', function (Request $request) {
+        return $request->user();
+    });
+
 
 });

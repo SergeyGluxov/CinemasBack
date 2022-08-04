@@ -255,8 +255,13 @@ return [
         ],
         ['header' => 'account_settings'],
         [
+            'text' => 'OAuth2',
+            'url'  => '/admin/oauth_clients',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
             'text' => 'Пользователи',
-            'url'  => 'admin/settings',
+            'url'  => 'admin/users',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
