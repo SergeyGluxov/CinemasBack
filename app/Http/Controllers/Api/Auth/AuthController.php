@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function redirect()
     {
         $query = http_build_query([
-                'client_id' => '3',
+            'client_id' => '2',
             'redirect_uri' => 'http://localhost:8000',
             'response_type' => 'token',
             'scope' => '',
@@ -28,10 +28,10 @@ class AuthController extends Controller
         $response = $client->post('/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => '3',
-                'client_secret' => 'PmwV9XwkzCEqyUeyqiUZfLh5y3dtxGGcajh44rwD',
-                'username' => 'gluxov2@gmail.com',
-                'password' => '123123123',
+                'client_id' => '2',
+                'client_secret' => 'MuOmJeE8PSlqNnhWzJsqvYKBFKbB1zwXbIqPbF0F',
+                'username' => $request->email,
+                'password' => $request->password,
                 'scope' => '*',
             ],
         ]);
@@ -44,7 +44,6 @@ class AuthController extends Controller
         /*      session()->put('token', json_decode((string) $response->getBody(), true));*/
         return redirect('/home');
     }
-
 
 
 }

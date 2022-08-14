@@ -2,7 +2,14 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\Social\GithubController;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +46,8 @@ Route::get('/callback',  [AuthController::class, 'callback']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get('/login/github', [GithubController::class,'redirectToProvider']);
+Route::get('/login/github/callback', [GithubController::class,'handleProviderCallback']);
+
