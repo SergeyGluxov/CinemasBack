@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\Social\GithubController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -39,8 +40,8 @@ Route::get('/admin/oauth_clients', function () {
     return view('admin/oauth/oauth_clients');
 });
 
-Route::get('/redirect',  [AuthController::class, 'redirect']);
-Route::get('/callback',  [AuthController::class, 'callback']);
+Route::get('/redirect', [AuthController::class, 'redirect']);
+Route::get('/callback', [AuthController::class, 'callback']);
 
 
 Auth::routes();
@@ -48,6 +49,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/login/github', [GithubController::class,'redirectToProvider']);
-Route::get('/login/github/callback', [GithubController::class,'handleProviderCallback']);
+Route::get('/login/github', [GithubController::class, 'redirectToProvider']);
+Route::get('/login/github/callback', [GithubController::class, 'handleProviderCallback']);
+
+Route::get('/activate/', function () {
+    return Redirect::away('cinemas://');
+});
 

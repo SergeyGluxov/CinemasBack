@@ -18,11 +18,10 @@ class RegisterRepository
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => $request->get('password'),
-            'password_confirmation' => $request->get('password_confirmation'),
+            'password' => Hash::make($request->get('password')),
+            'password_confirmation' => Hash::make($request->get('password_confirmation')),
             'type' => $request->get('type'),
         ]);
-        $user->createToken('Laravel Password Grant Client')->accessToken;
 
 
         $client = new Client();
@@ -33,13 +32,11 @@ class RegisterRepository
                     'grant_type' => 'password',
                     'client_secret' => 'MuOmJeE8PSlqNnhWzJsqvYKBFKbB1zwXbIqPbF0F',
                     'username' => $user->email,
-                    'password' => '123132123',
+                    'password' => $request->get('password'),
                     'scope' => '*',
                 ]
             ]
         );
-        dd($response);
-
         $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
 
         return response($jsonFormattedResult, 200);
