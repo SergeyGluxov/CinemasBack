@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\Social\GithubController;
+use App\Http\Controllers\Api\Auth\Social\VkController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -51,6 +52,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/login/github', [GithubController::class, 'redirectToProvider']);
 Route::get('/login/github/callback', [GithubController::class, 'handleProviderCallback']);
+
+Route::get('/login/vk', [VkController::class, 'redirectToProvider']);
+Route::get('/login/vk/callback', [VkController::class, 'handleProviderCallback']);
 
 Route::get('/activate/', function () {
     return Redirect::away('cinemas://');

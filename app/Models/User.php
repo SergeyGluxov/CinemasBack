@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function findForPassport($username) {
+        return self::where('id', $username)->first();
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'device_uid',
+        'nickname',
+        'provider',
     ];
 
     /**

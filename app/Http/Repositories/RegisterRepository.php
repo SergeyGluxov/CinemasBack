@@ -12,33 +12,48 @@ class RegisterRepository
 {
     public function register(Request $request)
     {
+        $passwordDefault = '123123123';
+        $userStorage = null;
+        //Если есть nickname (некоторые сервисы не предоставляют email)
 
-        $request['password'] = Hash::make($request['password']);
-        $request['remember_token'] = Str::random(10);
-        $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            'password_confirmation' => Hash::make($request->get('password_confirmation')),
-            'type' => $request->get('type'),
-        ]);
+        if(!empty($request->get('email'))){
+            $userStorage = User::where('email', $request->get('email'))->first();
+        } else if(!empty($request->get('nickname'))) {
+            $userStorage = User::where('nickname', $request->get('nickname'))
+                ->where('provider',$request->get('provider'))
+                ->first();
+        } else if(!empty($request->get('device_uid'))){
+            $userStorage = User::where('device_uid', $request->get('device_uid'))->first();
+        }
 
+
+        if (!$userStorage) {
+            $userStorage = User::create([
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'nickname' => $request->get('nickname'),
+                'provider' => $request->get('provider'),
+                'password' => Hash::make($passwordDefault),
+                'password_confirmation' => Hash::make($passwordDefault),
+                'type' => 0,
+                'device_uid'=>$request->get('device_uid')
+            ]);
+        }
 
         $client = new Client();
-        $response = $client->post('http://api.cinemas.net/oauth/token',
+        $response = $client->post('http://localhost:8001/oauth/token',
             [
                 'form_params' => [
-                    'client_id' => '2',
-                    'grant_type' => 'password',
-                    'client_secret' => 'MuOmJeE8PSlqNnhWzJsqvYKBFKbB1zwXbIqPbF0F',
-                    'username' => $user->email,
-                    'password' => $request->get('password'),
+                    'client_id' => $request->get('client_id'),
+                    'grant_type' => $request->get('grant_type'),
+                    'client_secret' => $request->get('client_secret'),
+                    'username' => $userStorage->id,
+                    'password' => '123123123',
                     'scope' => '*',
                 ]
             ]
         );
         $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
-
         return response($jsonFormattedResult, 200);
     }
 

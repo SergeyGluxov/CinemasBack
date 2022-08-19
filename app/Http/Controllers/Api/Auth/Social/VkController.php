@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
-class GithubController extends Controller
+class VkController extends Controller
 {
 
     protected $registerRepository;
@@ -23,22 +23,22 @@ class GithubController extends Controller
 
     public function redirectToProvider()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver('vkontakte')->redirect();
     }
 
     /**
-     * Obtain the user information fproviderrom GitHub.
+     * Obtain the user information from GitHub.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('github')->user();
+        $user = Socialite::driver('vkontakte')->user();
         $authRequest = Request::create('POST');
         $authRequest->request->add(['name' => $user->getName()]);
         $authRequest->request->add(['email' => $user->getEmail()]);
         $authRequest->request->add(['nickname' => $user->getNickname()]);
-        $authRequest->request->add(['provider' => 'github']);
+        $authRequest->request->add(['provider' => 'vk']);
         $authRequest->request->add(['grant_type' => 'password']);
         $authRequest->request->add(['client_secret' => 'L3OFt6qSTGsp79pP6AUYW0ZIbPIpLofU0tGw4SIU']);
         $authRequest->request->add(['client_id' => 4]);
