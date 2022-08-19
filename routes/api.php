@@ -79,5 +79,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         return $request->user();
     });
 
+    Route::get('/profile', function (Request $request) {
+        return $request->user();
+    });
+
 
 });
