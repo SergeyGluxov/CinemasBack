@@ -16,10 +16,13 @@ use App\Http\Controllers\Api\Filter\FilterController;
 use App\Http\Controllers\Api\Page\PageController;
 use App\Http\Controllers\Api\Page\PageFeedController;
 use App\Http\Controllers\Api\Release\ReleaseController;
+use App\Http\Controllers\Api\Roles\RolesController;
+use App\Http\Controllers\Api\Roles\UserRoleController;
 use App\Http\Controllers\Api\SyncCinemas\SyncCinemasController;
 use App\Http\Controllers\Api\SyncCinemas\SyncMoreController;
 use App\Http\Controllers\Api\SyncCinemas\SyncPremierController;
 use App\Http\Controllers\Api\SyncCinemas\SyncTvigleController;
+use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,9 +37,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
 
@@ -75,13 +78,14 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/getFilters', [FilterController::class, 'getFilters']);
 
-    Route::get('/users', function (Request $request) {
-        return $request->user();
-    });
 
-    Route::get('/profile', function (Request $request) {
-        return $request->user();
-    });
+    Route::resource('/user',UserController::class);
+    Route::get('/profile',[UserController::class,'profile']);
+
+    Route::resource('/roles', RolesController::class);
+    Route::post('/roles/setUser', [RolesController::class, 'storeUserRole']);
+    Route::post('/roles/delete', [RolesController::class, 'deleteRole']);
+    Route::resource('/userRole', UserRoleController::class);
 
 
 });
