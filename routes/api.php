@@ -52,17 +52,33 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::post('/syncIviFilm', [SyncCinemasController::class, 'syncIviFilm']);
-    Route::post('/syncMoreFilms', [SyncMoreController::class, 'syncMoreFilms']);
-    Route::post('/syncPremierFilms', [SyncPremierController::class, 'syncPremierFilms']);
-    Route::post('/syncTvigleFilms', [SyncTvigleController::class, 'syncTvigleFilms']);
-    Route::resource('/type', TypeContentController::class);
-    Route::resource('/content', ContentController::class);
-    Route::resource('/genre', GenreController::class);
-    Route::resource('/contentGenre', ContentGenreController::class);
-    Route::resource('/contentCreator', ContentCreatorController::class);
-    Route::resource('/feedContent', FeedContentController::class);
-    Route::post('/deleteContentFromFeed', [FeedContentController::class, 'deleteContentFromFeed']);
+    Route::group(['middleware' => 'role:admin'], function () {
+        /**Синхронизация контента**/
+        Route::post('/syncIviFilm', [SyncCinemasController::class, 'syncIviFilm']);
+        Route::post('/syncMoreFilms', [SyncMoreController::class, 'syncMoreFilms']);
+        Route::post('/syncPremierFilms', [SyncPremierController::class, 'syncPremierFilms']);
+        Route::post('/syncTvigleFilms', [SyncTvigleController::class, 'syncTvigleFilms']);
+
+        Route::resource('/type', TypeContentController::class);
+        Route::resource('/content', ContentController::class);
+        Route::resource('/genre', GenreController::class);
+        Route::resource('/userRole', UserRoleController::class);
+        Route::resource('/roles', RolesController::class);
+        Route::resource('/user',UserController::class);
+        Route::resource('/contentGenre', ContentGenreController::class);
+        Route::resource('/contentCreator', ContentCreatorController::class);
+        Route::resource('/feedContent', FeedContentController::class);
+        Route::post('/deleteContentFromFeed', [FeedContentController::class, 'deleteContentFromFeed']);
+    });
+
+    Route::resource('/type', TypeContentController::class)->only('index');
+    Route::resource('/content', ContentController::class)->only('index');
+    Route::resource('/genre', GenreController::class)->only('index');
+
+    Route::get('/getFilters', [FilterController::class, 'getFilters']);
+    Route::get('/profile',[UserController::class,'profile']);
+
+
     Route::resource('/feed', FeedController::class);
 
     Route::resource('/page', PageController::class);
@@ -75,17 +91,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/search', [SearchController::class, 'search']);
     Route::post('/searchByFilter', [SearchController::class, 'searchByFilter']);
-
-    Route::get('/getFilters', [FilterController::class, 'getFilters']);
-
-
-    Route::resource('/user',UserController::class);
-    Route::get('/profile',[UserController::class,'profile']);
-
-    Route::resource('/roles', RolesController::class);
-    Route::post('/roles/setUser', [RolesController::class, 'storeUserRole']);
-    Route::post('/roles/delete', [RolesController::class, 'deleteRole']);
-    Route::resource('/userRole', UserRoleController::class);
-
 
 });
