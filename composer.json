@@ -17,7 +17,8 @@
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "socialiteproviders/vkontakte": "^4.2"
+        "socialiteproviders/vkontakte": "^4.2",
+        "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
