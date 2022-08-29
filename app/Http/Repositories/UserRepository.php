@@ -34,6 +34,7 @@ class UserRepository
     {
         $userStore = User::find($id);
         $userStore->name = $request->get('name');
+        $userStore->email = $request->get('email');
         $userStore->save();
         return response('Информация о пользователе обновлена', 200);
     }

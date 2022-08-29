@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::resource('/genre', GenreController::class);
         Route::resource('/userRole', UserRoleController::class);
         Route::resource('/roles', RolesController::class);
-        Route::resource('/user',UserController::class);
+        Route::resource('/user', UserController::class);
         Route::resource('/contentGenre', ContentGenreController::class);
         Route::resource('/contentCreator', ContentCreatorController::class);
         Route::resource('/feedContent', FeedContentController::class);
@@ -72,11 +72,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::resource('/type', TypeContentController::class)->only('index');
-    Route::resource('/content', ContentController::class)->only('index');
+    Route::resource('/content', ContentController::class)->only(['index', 'show']);
     Route::resource('/genre', GenreController::class)->only('index');
 
     Route::get('/getFilters', [FilterController::class, 'getFilters']);
-    Route::get('/profile',[UserController::class,'profile']);
+    Route::get('/profile', [UserController::class, 'profile']);
+    Route::put('/profile/{id}', [UserController::class, 'update']);
 
 
     Route::resource('/feed', FeedController::class);

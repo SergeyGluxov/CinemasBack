@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function redirect()
     {
         $query = http_build_query([
-            'client_id' => '2',
+            'client_id' => '5',
             'redirect_uri' => 'http://localhost:8000',
             'response_type' => 'token',
             'scope' => '',
@@ -28,7 +28,7 @@ class AuthController extends Controller
         $response = $client->post('/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => '2',
+                'client_id' => '5',
                 'client_secret' => 'MuOmJeE8PSlqNnhWzJsqvYKBFKbB1zwXbIqPbF0F',
                 'username' => $request->email,
                 'password' => $request->password,

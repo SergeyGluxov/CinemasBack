@@ -50,55 +50,57 @@ class SyncMoreController extends Controller
     public function syncMoreFilms()
     {
 
-        $curl = curl_init();
+//        $curl = curl_init();
+//
+//        curl_setopt_array($curl, array(
+//            CURLOPT_URL => "https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=MOVIE&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18",// your preferred link
+//            CURLOPT_RETURNTRANSFER => true,
+//            CURLOPT_ENCODING => "",
+//            CURLOPT_TIMEOUT => 30000,
+//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//            CURLOPT_CUSTOMREQUEST => "GET",
+//            CURLOPT_HTTPHEADER => array(
+//                // Set Here mYour Requesred Headers
+//                'Content-Type: application/json',
+//            ),
+//        ));
+//        $response = curl_exec($curl);
+//        $err = curl_error($curl);
+//        curl_close($curl);
+//
+//        if ($err) {
+//            dd($err);
+//        } else {
+//            dd(json_decode($response));
+//        }
+//
+//
+//
+//
+//
+//
+//        $response = Http::get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=MOVIE&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18');
+//        dd($response->body());
+//        $cookieJar = CookieJar::fromArray([
+//            'Cookie' => '__lhash_=fe61d15f25baab9e62807d25caec02ab'
+//        ], 'more.tv');
+//
+//        $clientCollection = new Client(
+//            [
+//                'headers' => [
+//                    'User-Agent' => 'PostmanRuntime/7.26.8',
+//                    'Host'=>'more.tv',
+//                    'Accept-Encoding'=>'gzip, deflate, br',
+//                    'Accept'=>'*/*',
+//                    'Postman-Token'=>'f15adc77-1b88-4d22-8f0b-3c47ab60a740'
+//                ],
+//                'cookies'=>$cookieJar,
+//                'allow_redirects' => true,
+//                'decode_content' => true
+//            ]
+//        );
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=MOVIE&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18",// your preferred link
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_TIMEOUT => 30000,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                // Set Here Your Requesred Headers
-                'Content-Type: application/json',
-            ),
-        ));
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
-
-        if ($err) {
-            dd($err);
-        } else {
-            dd(json_decode($response));
-        }
-
-
-
-
-
-
-        $response = Http::get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=MOVIE&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18');
-        dd($response->body());
-        $cookieJar = CookieJar::fromArray([
-            'Cookie' => '__lhash_=fe61d15f25baab9e62807d25caec02ab'
-        ], 'more.tv');
-
-        $clientCollection = new Client(
-            [
-                'headers' => [
-                    'User-Agent' => 'PostmanRuntime/7.26.8',
-                    'Host'=>'more.tv',
-                    'Accept-Encoding'=>'gzip, deflate, br',
-                    'Accept'=>'*/*',
-                    'Postman-Token'=>'f15adc77-1b88-4d22-8f0b-3c47ab60a740'
-                ],
-                'cookies'=>$cookieJar,
-                'allow_redirects' => true,
-                'decode_content' => true
-            ]
-        );
+        $clientCollection = new Client();
         $responseCollection = $clientCollection->get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=MOVIE&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18');
         $jsonFormattedResult = json_decode($responseCollection->getBody()->getContents(), true);
 
