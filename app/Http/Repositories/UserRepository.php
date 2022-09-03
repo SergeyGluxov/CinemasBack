@@ -18,7 +18,7 @@ class UserRepository
 
     public function all()
     {
-        UserResource::withoutWrapping();
+        UserResource::withoutWrapping();    
         return UserResource::collection(User::all());
     }
 
