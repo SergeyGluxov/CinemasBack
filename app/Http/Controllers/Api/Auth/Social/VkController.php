@@ -40,6 +40,24 @@ class VkController extends Controller
         $authRequest->request->add(['client_id' => 5]);
         $response = $this->registerRepository->register($authRequest);
         $jsonFormattedResult = json_decode($response->getContent(), true);
+        dd($user);
         return redirect()->away('cinemas://?refresh_token=' . $jsonFormattedResult['refresh_token']);
+    }
+
+    public function authByAccessToken(Request $request)
+    {
+        $accessToken = $request->get('access_token');
+        $user = Socialite::driver('vkontakte')->userFromToken($accessToken);
+        $authRequest = Request::create('POST');
+        $authRequest->request->add(['name' => $user->getName()]);
+        $authRequest->request->add(['email' => $user->getEmail()]);
+        $authRequest->request->add(['nickname' => $user->getNickname()]);
+        $authRequest->request->add(['provider' => 'vkontakte']);
+        $authRequest->request->add(['grant_type' => 'password']);
+        $authRequest->request->add(['client_secret' => '9On3hGG541wNSjw7uZXt4DIjvUc60qJUejm0Ycq8']);
+        $authRequest->request->add(['client_id' => 5]);
+        $response = $this->registerRepository->register($authRequest);
+        $jsonFormattedResult = json_decode($response->getContent(), true);
+        return $jsonFormattedResult;
     }
 }
