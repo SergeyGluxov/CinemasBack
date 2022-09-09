@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\Social\GoogleController;
 use App\Http\Controllers\Api\Auth\Social\VkController;
 use App\Http\Controllers\Api\Content\ContentController;
 use App\Http\Controllers\Api\Content\ContentCreatorController;
@@ -94,5 +95,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/search', [SearchController::class, 'search']);
     Route::post('/searchByFilter', [SearchController::class, 'searchByFilter']);
     Route::post('/auth/vk', [VkController::class, 'authByAccessToken']);
+    Route::post('/auth/google', [GoogleController::class, 'authByAccessToken']);
 
 });
