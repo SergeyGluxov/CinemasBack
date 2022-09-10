@@ -18,7 +18,7 @@ class UserRepository
 
     public function all()
     {
-        UserResource::withoutWrapping();    
+        UserResource::withoutWrapping();
         return UserResource::collection(User::all());
     }
 
@@ -47,7 +47,7 @@ class UserRepository
     }
 
 
-    public function profile(Request $request)
+    public function userProfile(Request $request)
     {
         UserResource::withoutWrapping();
         return new UserResource($request->user());

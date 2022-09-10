@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth\Social;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\ProfileRepository;
 use App\Http\Repositories\RegisterRepository;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -11,10 +12,12 @@ class VkController extends Controller
 {
 
     protected $registerRepository;
+    protected $profileRepository;
 
-    public function __construct(RegisterRepository $registerRepository)
+    public function __construct(RegisterRepository $registerRepository, ProfileRepository $profileRepository)
     {
         $this->registerRepository = $registerRepository;
+        $this->profileRepository = $profileRepository;
     }
 
     public function redirectToProvider()
@@ -57,6 +60,17 @@ class VkController extends Controller
         $authRequest->request->add(['client_secret' => '9On3hGG541wNSjw7uZXt4DIjvUc60qJUejm0Ycq8']);
         $authRequest->request->add(['client_id' => 5]);
         $response = $this->registerRepository->register($authRequest);
+
+        if ($response->getStatusCode() == 200) {
+            $user =
+            $profileRequest = Request::create('POST');
+            $profileRequest->request->add(['user_id' => auth()->guard('api')->user()->id]);
+            $profileRequest->request->add(['email' => $user->getEmail()]);
+            $profileRequest->request->add(['provider' => 'vkontakte']);
+            $responseCreateProfile = $this->profileRepository->createOrSelectProfile($authRequest);
+            dd($responseCreateProfile);
+        }
+
         $jsonFormattedResult = json_decode($response->getContent(), true);
         return $jsonFormattedResult;
     }

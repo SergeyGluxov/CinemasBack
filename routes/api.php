@@ -79,9 +79,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('/genre', GenreController::class)->only('index');
 
     Route::get('/getFilters', [FilterController::class, 'getFilters']);
-    /* Route::get('/profile', [UserController::class, 'profile']);
+    /* ;
      Route::put('/profile/{id}', [UserController::class, 'update']);*/
-
+    Route::get('/profile', [UserController::class, 'userProfile']);
 
     Route::resource('/feed', FeedController::class);
 
@@ -99,6 +99,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/auth/google', [GoogleController::class, 'authByAccessToken']);
 
     Route::resource('/profile', ProfileController::class);
-    Route::post('/userProfile', [ProfileController::class, 'userProfile']);
+    Route::post('/userProfile', [UserController::class, 'userProfile']);
     Route::post('/createOrSelectProfile', [ProfileController::class, 'createOrSelectProfile']);
 });

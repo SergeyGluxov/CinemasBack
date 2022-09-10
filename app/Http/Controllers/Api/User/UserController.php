@@ -37,9 +37,9 @@ class UserController extends Controller
         return $this->userRepository->destroy($id);
     }
 
-    public function profile(Request  $request)
+    public function userProfile(Request  $request)
     {
-        return $this->userRepository->profile($request);
+        return $this->userRepository->userProfile($request);
     }
 
 }

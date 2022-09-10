@@ -13,7 +13,8 @@ class UserResource extends JsonResource
             'name' =>$this->name,
             'email' =>$this->email,
             'provider' =>$this->provider,
-            'roles' => RolesResource::collection($this->roles)
+            'roles' => RolesResource::collection($this->roles),
+            'profile' => $this->profiles()->where('is_selected', 1)->first()
         ];
     }
 }
