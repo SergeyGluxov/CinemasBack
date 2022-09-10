@@ -6,7 +6,6 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class RegisterRepository
 {
@@ -14,18 +13,11 @@ class RegisterRepository
     {
         $passwordDefault = '123123123';
         $userStorage = null;
-        //Если есть nickname (некоторые сервисы не предоставляют email)
 
-        if(!empty($request->get('email'))){
-            $userStorage = User::where('email', $request->get('email'))->first();
-        } else if(!empty($request->get('nickname'))) {
-            $userStorage = User::where('nickname', $request->get('nickname'))
-                ->where('provider',$request->get('provider'))
-                ->first();
-        } else if(!empty($request->get('device_uid'))){
+        //Если нет User, создать его
+        if (!empty($request->get('device_uid'))) {
             $userStorage = User::where('device_uid', $request->get('device_uid'))->first();
         }
-
 
         if (!$userStorage) {
             $userStorage = User::create([
@@ -36,10 +28,11 @@ class RegisterRepository
                 'password' => Hash::make($passwordDefault),
                 'password_confirmation' => Hash::make($passwordDefault),
                 'type' => 0,
-                'device_uid'=>$request->get('device_uid')
+                'device_uid' => $request->get('device_uid')
             ]);
         }
 
+        //todo  Профиль на этом этапе не создается, если нет профиля -> не авторизован
         $client = new Client();
         $response = $client->post('http://localhost:8001/oauth/token',
             [
