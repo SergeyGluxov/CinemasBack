@@ -42,4 +42,9 @@ class ReleaseController extends Controller
         return $this->releaseRepository->getContentRelease($request);
     }
 
+    public function getEpisodeRelease(Request $request)
+    {
+        return $this->releaseRepository->getEpisodeRelease($request);
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Http\Resources\ReleaseResource;
 use App\Models\Content;
+use App\Models\Episode;
 use App\Models\Release;
 use Illuminate\Http\Request;
 
@@ -62,6 +63,12 @@ class ReleaseRepository
         $content = Content::where('id', $request->get('content_id'))->first();
         ReleaseResource::withoutWrapping();
         return ReleaseResource::collection($content->releases);
+    }
+
+    public function getEpisodeRelease(Request $request){
+        $episode = Episode::where('id', $request->get('episode_id'))->first();
+        ReleaseResource::withoutWrapping();
+        return ReleaseResource::collection($episode->releases);
     }
 
 }

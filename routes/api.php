@@ -15,11 +15,13 @@ use App\Http\Controllers\Api\Content\SearchController;
 use App\Http\Controllers\Api\Content\TypeContentController;
 use App\Http\Controllers\Api\Content\UserContentController;
 use App\Http\Controllers\Api\Creators\CreatorsController;
+use App\Http\Controllers\Api\Episode\EpisodeController;
 use App\Http\Controllers\Api\Feed\FeedController;
 use App\Http\Controllers\Api\Filter\FilterController;
 use App\Http\Controllers\Api\Page\PageController;
 use App\Http\Controllers\Api\Page\PageFeedController;
 use App\Http\Controllers\Api\Release\ReleaseController;
+use App\Http\Controllers\Api\Season\SeasonController;
 use App\Http\Controllers\Api\Roles\RolesController;
 use App\Http\Controllers\Api\Roles\UserRoleController;
 use App\Http\Controllers\Api\SyncCinemas\SyncCinemasController;
@@ -92,7 +94,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('/creator', CreatorsController::class);
 
     Route::resource('/release', ReleaseController::class);
+    Route::resource('/season', SeasonController::class);
+    Route::resource('/episode', EpisodeController::class);
     Route::post('/contenteRelease', [ReleaseController::class, 'getContentRelease']);
+    Route::post('/episodeRelease', [ReleaseController::class, 'getEpisodeRelease']);
+    Route::post('/сontentSeason', [SeasonController::class, 'getContentSeason']);
+    Route::post('/seasonEpisode', [EpisodeController::class, 'getSeasonEpisode']);
 
     Route::post('/search', [SearchController::class, 'search']);
     Route::post('/searchByFilter', [SearchController::class, 'searchByFilter']);

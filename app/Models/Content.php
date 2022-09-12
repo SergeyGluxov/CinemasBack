@@ -39,6 +39,11 @@ class Content extends Model
         return $this->hasMany(Release::class);
     }
 
+    public function seasons()
+    {
+        return $this->hasMany(Season::class);
+    }
+
     public function country()
     {
         return $this->belongsTo(Country::class);
