@@ -21,6 +21,18 @@ class Content extends Model
         return $this->belongsToMany('App\Models\Creator', 'contents_creators', 'content_id', 'creator_id');
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, UsersContents::class, 'content_id', 'user_id');
+    }
+
+
+    public function isFavorite()
+    {
+        $user = $this->users->toArray();
+        return !empty($user);
+    }
+
 
     public function releases()
     {

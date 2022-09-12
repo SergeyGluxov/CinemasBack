@@ -12,7 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function findForPassport($username) {
+    public function findForPassport($username)
+    {
         return self::where('id', $username)->first();
     }
 
@@ -53,6 +54,12 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'users_roles', 'user_id', 'role_id');
+    }
+
+
+    public function contents()
+    {
+        return $this->belongsToMany(Content::class, UsersContents::class, 'user_id', 'content_id');
     }
 
     public function role()

@@ -8,10 +8,12 @@ use App\Http\Controllers\Api\Auth\Social\VkController;
 use App\Http\Controllers\Api\Content\ContentController;
 use App\Http\Controllers\Api\Content\ContentCreatorController;
 use App\Http\Controllers\Api\Content\ContentGenreController;
+use App\Http\Controllers\Api\Content\FavoriteController;
 use App\Http\Controllers\Api\Content\FeedContentController;
 use App\Http\Controllers\Api\Content\GenreController;
 use App\Http\Controllers\Api\Content\SearchController;
 use App\Http\Controllers\Api\Content\TypeContentController;
+use App\Http\Controllers\Api\Content\UserContentController;
 use App\Http\Controllers\Api\Creators\CreatorsController;
 use App\Http\Controllers\Api\Feed\FeedController;
 use App\Http\Controllers\Api\Filter\FilterController;
@@ -97,4 +99,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/auth/vk', [VkController::class, 'authByAccessToken']);
     Route::post('/auth/google', [GoogleController::class, 'authByAccessToken']);
 
+    Route::resource('/userContent', UserContentController::class);
+
+    Route::resource('/favorite', FavoriteController::class);
+    Route::post('/addFavorite', [FavoriteController::class, 'addFavorite']);
+    Route::post('/removeFavorite', [FavoriteController::class, 'removeFavorite']);
 });
