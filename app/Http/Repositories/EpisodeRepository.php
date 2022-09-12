@@ -61,5 +61,11 @@ class EpisodeRepository
         return EpisodeResource::collection($season->Episodes);
     }
 
+    public function findFromTitle($season_id, $title)
+    {
+        return Episode::where('season_id', $season_id)->where('title', $title)->first();
+
+    }
+
 }
 

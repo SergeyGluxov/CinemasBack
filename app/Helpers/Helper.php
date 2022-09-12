@@ -180,7 +180,7 @@ class Helper
         switch ($value) {
             case 'MOVIE':
                 return "Фильм";
-            case 'Serial':
+            case 'SERIES':
                 return "Сериал";
             default:
                 return "Undefined";

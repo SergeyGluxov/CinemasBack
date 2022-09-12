@@ -54,10 +54,16 @@ class SeasonRepository
             return response('Успешно удалено!', 200);
     }
 
-    public function getContentSeason(Request $request){
+    public function getContentSeason(Request $request)
+    {
         $content = Content::where('id', $request->get('content_id'))->firstOrFail();
         SeasonResource::withoutWrapping();
         return SeasonResource::collection($content->seasons);
+    }
+
+    public function findFromTitle($content_id, $title)
+    {
+        return Season::where('content_id', $content_id)->where('title', $title)->first();
     }
 
 }

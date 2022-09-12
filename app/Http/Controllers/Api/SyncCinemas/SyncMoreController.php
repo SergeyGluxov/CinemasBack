@@ -9,8 +9,10 @@ use App\Http\Repositories\ContentCreatorRepository;
 use App\Http\Repositories\ContentGenreRepository;
 use App\Http\Repositories\ContentRepository;
 use App\Http\Repositories\CreatorRepository;
+use App\Http\Repositories\EpisodeRepository;
 use App\Http\Repositories\GenreRepository;
 use App\Http\Repositories\ReleaseRepository;
+use App\Http\Repositories\SeasonRepository;
 use App\Http\Repositories\TypeContentRepository;
 use App\Models\Country;
 use GuzzleHttp\Client;
@@ -26,6 +28,8 @@ class SyncMoreController extends Controller
     protected $contentGenreRepository;
     protected $contentCreatorRepository;
     protected $releaseRepository;
+    protected $seasonRepository;
+    protected $episodeRepository;
 
     public function __construct(CreatorRepository $creatorRepository,
                                 ContentRepository $contentRepository,
@@ -33,7 +37,9 @@ class SyncMoreController extends Controller
                                 TypeContentRepository $typeContentRepository,
                                 ContentGenreRepository $contentGenreRepository,
                                 ContentCreatorRepository $contentCreatorRepository,
-                                ReleaseRepository $releaseRepository
+                                ReleaseRepository $releaseRepository,
+                                SeasonRepository $seasonRepository,
+                                EpisodeRepository $episodeRepository
     )
     {
         $this->creatorRepository = $creatorRepository;
@@ -43,12 +49,16 @@ class SyncMoreController extends Controller
         $this->contentGenreRepository = $contentGenreRepository;
         $this->contentCreatorRepository = $contentCreatorRepository;
         $this->releaseRepository = $releaseRepository;
+        $this->seasonRepository = $seasonRepository;
+        $this->episodeRepository = $episodeRepository;
     }
 
-    public function syncMoreFilms()
+    public function syncMoreFilms(Request $request)
     {
+        $type = $request->get('type');
+
         $clientCollection = new Client();
-        $responseCollection = $clientCollection->get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=MOVIE&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18');
+        $responseCollection = $clientCollection->get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=' . $type . '&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D=18&page%5Blimit%5D=18');
         $jsonFormattedResult = json_decode($responseCollection->getBody()->getContents(), true);
 
         //Todo a - тестовое ограничение на количество запросов из ленты бесплатного контента
@@ -136,27 +146,76 @@ class SyncMoreController extends Controller
             }
 
 
-            //Забираем или обновляем релиз
+            if ($typeContent->title == "Сериал") {
+                $client = new Client();
+                $response = $client->get('https://api.more.tv/v2/app/Projects/' . $contentItem['id'] . '/seasons');
+                $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
+                $seasonInfo = $jsonFormattedResult['data'];
+                foreach ($seasonInfo as $item) {
+                    //Создаем сезон
+                    $storeSeason = Request::create('POST');
+                    $storeSeason->request->add(['content_id' => $content->id]);
+                    $storeSeason->request->add(['title' => $item['title']]);
+                    $this->seasonRepository->store($storeSeason);
 
-            $client = new Client();
-            $response = $client->get('https://more.tv/api/v4/web/Projects/' . $contentItem['id'] . '/CurrentTrack');
-            $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
-            $releaseInfo = $jsonFormattedResult['data'];
+                    //Получаем сезон
+                    $season = $this->seasonRepository->findFromTitle($content->id, $item['title']);
+
+                    $client = new Client();
+                    $responseEpisode = $client->get('https://more.tv/api/v4/web/seasons/' . $item['id'] . '/tracks');
+                    $responseEpisodeJson = json_decode($responseEpisode->getBody()->getContents(), true);
+                    $episodes = $responseEpisodeJson['data'];
 
 
-            $isReleaseFound = false;
-            foreach ($content->releases as $item) {
-                if ($item->cinema == "MORE") {
-                    $isReleaseFound = true;
+                    foreach ($episodes as $episode) {
+                        //Забираем или обновляем релиз
+                        $storeEpisode = Request::create('POST');
+                        $storeEpisode->request->add(['season_id' => $season->id]);
+                        $storeEpisode->request->add(['title' => $episode['title']]);
+                        $this->episodeRepository->store($storeEpisode);
+
+                        //Получаем сезон
+                        $episodeDB = $this->episodeRepository->findFromTitle($season->id, $episode['title']);
+
+                        $isReleaseFound = false;
+                        foreach ($content->releases as $item) {
+                            if ($item->cinema == "MORE") {
+                                $isReleaseFound = true;
+                            }
+                        }
+                        if (!$isReleaseFound) {
+                            $storeRelease = Request::create('POST');
+                            $storeRelease->request->add(['content_id' => $content->id]);
+                            $storeRelease->request->add(['episode_id' => $episodeDB->id]);
+                            $storeRelease->request->add(['cinema' => 'MORE']);
+                            $storeRelease->request->add(['type' => 'web']);
+                            $storeRelease->request->add(['url' => 'https://odysseus.more.tv/player/1788/' . $episode['hubId'] . '?p2p=0&startAt=0&web_version=2.55.8-eng&autoplay=1']);
+                            $this->releaseRepository->store($storeRelease);
+                        }
+                    }
                 }
-            }
-            if (!$isReleaseFound) {
-                $storeRelease = Request::create('POST');
-                $storeRelease->request->add(['content_id' => $content->id]);
-                $storeRelease->request->add(['cinema' => 'MORE']);
-                $storeRelease->request->add(['type' => 'web']);
-                $storeRelease->request->add(['url' => 'https://odysseus.more.tv/player/1788/' . $releaseInfo['hubId'] . '?p2p=0&startAt=0&web_version=2.55.8-eng&autoplay=1']);
-                $this->releaseRepository->store($storeRelease);
+            } else {
+                //Забираем или обновляем релиз
+                $client = new Client();
+                $response = $client->get('https://more.tv/api/v4/web/Projects/' . $contentItem['id'] . '/CurrentTrack');
+                $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
+                $releaseInfo = $jsonFormattedResult['data'];
+
+                $isReleaseFound = false;
+                foreach ($content->releases as $item) {
+                    if ($item->cinema == "MORE") {
+                        $isReleaseFound = true;
+                    }
+                }
+                if (!$isReleaseFound) {
+                    $storeRelease = Request::create('POST');
+                    $storeRelease->request->add(['content_id' => $content->id]);
+                    $storeRelease->request->add(['cinema' => 'MORE']);
+                    $storeRelease->request->add(['type' => 'web']);
+                    $storeRelease->request->add(['url' => 'https://odysseus.more.tv/player/1788/' . $releaseInfo['hubId'] . '?p2p=0&startAt=0&web_version=2.55.8-eng&autoplay=1']);
+                    $this->releaseRepository->store($storeRelease);
+                }
+
             }
 
             $a++;

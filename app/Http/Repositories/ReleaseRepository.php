@@ -34,6 +34,7 @@ class ReleaseRepository
     {
         $releaseStore = new Release();
         $releaseStore->content_id = $request->get('content_id');
+        $releaseStore->episode_id = $request->get('episode_id');
         $releaseStore->cinema = $request->get('cinema');
         $releaseStore->type = $request->get('type');
         $releaseStore->url = $request->get('url');
