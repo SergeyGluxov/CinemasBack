@@ -153,10 +153,16 @@ class SyncMoreController extends Controller
                 $seasonInfo = $jsonFormattedResult['data'];
                 foreach ($seasonInfo as $item) {
                     //Создаем сезон
+                    $seasonDB = $this->seasonRepository->findFromTitle($content->id, $item['title']);
+
                     $storeSeason = Request::create('POST');
                     $storeSeason->request->add(['content_id' => $content->id]);
                     $storeSeason->request->add(['title' => $item['title']]);
-                    $this->seasonRepository->store($storeSeason);
+                    if (empty($seasonDB)) {
+                        $this->seasonRepository->store($storeSeason);
+                    } else {
+                        $this->seasonRepository->update($storeSeason, $seasonDB->id);
+                    }
 
                     //Получаем сезон
                     $season = $this->seasonRepository->findFromTitle($content->id, $item['title']);
@@ -169,10 +175,20 @@ class SyncMoreController extends Controller
 
                     foreach ($episodes as $episode) {
                         //Забираем или обновляем релиз
+                        //Проверить, существует ли эпизод
+                        $episodeDB = $this->episodeRepository->findFromTitle($season->id, $episode['title']);
                         $storeEpisode = Request::create('POST');
                         $storeEpisode->request->add(['season_id' => $season->id]);
                         $storeEpisode->request->add(['title' => $episode['title']]);
-                        $this->episodeRepository->store($storeEpisode);
+                        if (isset($episode['trackFreezeGallery'])) {
+                            $poster = array_values($episode['trackFreezeGallery']['JPEG'])[count($episode['trackFreezeGallery']['JPEG']) - 1]['url'];
+                            $storeEpisode->request->add(['poster' => $poster]);
+                        }
+                        if (empty($episodeDB)) {
+                            $this->episodeRepository->store($storeEpisode);
+                        } else {
+                            $this->episodeRepository->update($storeEpisode, $episodeDB->id);
+                        }
 
                         //Получаем сезон
                         $episodeDB = $this->episodeRepository->findFromTitle($season->id, $episode['title']);

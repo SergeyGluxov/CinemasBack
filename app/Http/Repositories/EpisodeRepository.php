@@ -34,6 +34,7 @@ class EpisodeRepository
         $store = new Episode();
         $store->season_id = $request->get('season_id');
         $store->title = $request->get('title');
+        $store->poster = $request->get('poster');
         $store->save();
         return response('Успешно добавлен', 200);
     }
@@ -43,6 +44,7 @@ class EpisodeRepository
         $store = Episode::find($id);
         $store->season_id = $request->get('season_id');
         $store->title = $request->get('title');
+        $store->poster = $request->get('poster');
         $store->save();
         return response('Запись обновлена', 200);
     }

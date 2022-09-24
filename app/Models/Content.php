@@ -29,8 +29,8 @@ class Content extends Model
 
     public function isFavorite()
     {
-        $user = $this->users->toArray();
-        return !empty($user);
+        $user = auth()->user()->id;
+        return !empty($this->users()->where('user_id', $user)->first());
     }
 
 
