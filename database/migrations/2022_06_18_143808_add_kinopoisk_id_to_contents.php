@@ -14,7 +14,7 @@ class AddKinopoiskIdToContents extends Migration
     public function up()
     {
         Schema::table('contents', function (Blueprint $table) {
-            $table->string('kinopoisk_id');
+            $table->string('kinopoisk_id')->nullable();
         });
     }
 

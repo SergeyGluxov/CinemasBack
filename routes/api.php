@@ -77,6 +77,12 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/deleteContentFromFeed', [FeedContentController::class, 'deleteContentFromFeed']);
     });
 
+    Route::group(['middleware' => 'role:authenticated'], function () {
+        Route::resource('/favorite', FavoriteController::class);
+        Route::post('/addFavorite', [FavoriteController::class, 'addFavorite']);
+        Route::post('/removeFavorite', [FavoriteController::class, 'removeFavorite']);
+    });
+
     Route::resource('/type', TypeContentController::class)->only('index');
     Route::resource('/content', ContentController::class)->only(['index', 'show']);
     Route::resource('/genre', GenreController::class)->only('index');
@@ -108,7 +114,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('/userContent', UserContentController::class);
 
-    Route::resource('/favorite', FavoriteController::class);
-    Route::post('/addFavorite', [FavoriteController::class, 'addFavorite']);
-    Route::post('/removeFavorite', [FavoriteController::class, 'removeFavorite']);
+
 });
