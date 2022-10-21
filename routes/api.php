@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\Season\SeasonController;
 use App\Http\Controllers\Api\Roles\RolesController;
 use App\Http\Controllers\Api\Roles\UserRoleController;
 use App\Http\Controllers\Api\SyncCinemas\SyncCinemasController;
+use App\Http\Controllers\Api\SyncCinemas\SyncMoreCinemasController;
 use App\Http\Controllers\Api\SyncCinemas\SyncMoreController;
 use App\Http\Controllers\Api\SyncCinemas\SyncPremierController;
 use App\Http\Controllers\Api\SyncCinemas\SyncTvigleController;
@@ -61,7 +62,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['middleware' => 'role:admin'], function () {
         /**Синхронизация контента**/
         Route::post('/syncIviFilm', [SyncCinemasController::class, 'syncIviFilm']);
-        Route::post('/syncMoreFilms', [SyncMoreController::class, 'syncMoreFilms']);
+        Route::post('/syncMoreFilms', [SyncMoreCinemasController::class, 'syncMoreFilms']);
         Route::post('/syncPremierFilms', [SyncPremierController::class, 'syncPremierFilms']);
         Route::post('/syncTvigleFilms', [SyncTvigleController::class, 'syncTvigleFilms']);
 

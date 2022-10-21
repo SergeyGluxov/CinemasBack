@@ -13,11 +13,11 @@ use App\Http\Repositories\GenreRepository;
 use App\Http\Repositories\ReleaseRepository;
 use App\Http\Repositories\TypeContentRepository;
 use App\Models\Country;
-use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
-class SyncCinemasController extends Controller
+class SyncMoreCinemasController extends Controller
 {
     protected $creatorRepository;
     protected $contentRepository;
@@ -45,35 +45,24 @@ class SyncCinemasController extends Controller
         $this->releaseRepository = $releaseRepository;
     }
 
-    public function syncIviFilm()
+    public function syncMoreFilms(Request $request)
     {
 
-        for ($to = 29; $to < 300; $to += 29) {
+        $type = $request->get('type');
+        for ($to = 0; $to < 48; $to += 24) {
             $clientCollection = new Client();
-            $responseCollection = $clientCollection->get('https://api2.ivi.ru/mobileapi/catalogue/v5/?category=14&paid_type=AVOD&from=' . ($to - 29) . '&to=' . $to . '&withpreorderable=true&app_version=870&session=5f50069b8192933799505857_1640229232-0VSsdXnINDlnif4VJDNujuA&session_data=eyJ1aWQiOjgxOTI5MzM3OTk1MDU4NTd9.YNKr9A.s6dN769-1ipCvd3mfwm2vrPOb-8');
+            $responseCollection = $clientCollection->get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=' . $type . '&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D='.$to.'&page%5Blimit%5D=18');
             $jsonFormattedResult = json_decode($responseCollection->getBody()->getContents(), true);
-
             //Todo a - тестовое ограничение на количество запросов из ленты бесплатного контента
-            $a = 0;
-            foreach ($jsonFormattedResult['result'] as $contentItem) {
-                if(!$contentItem['drm_only']){
-                    if ($a == 5) break;
-                    $client = new Client();
-                    $response = $client->get('https://api2.ivi.ru/mobileapi/videoinfo/v7/?id=' . $contentItem['id'] . '&fields=id%2Ctitle%2Cfake%2Cpreorderable%2Chru%2Ccontent_paid_types%2Csubscription_names%2Ccompilation_hru%2Ckind%2Cadditional_data%2Crestrict%2Chd_available%2Chd_available_all%2C3d_available%2C3d_available_all%2Cuhd_available%2Cuhd_available_all%2Chdr10_available%2Chdr10_available_all%2Cdv_available%2Cdv_available_all%2Cfullhd_available%2Cfullhd_available_all%2Chdr10plus_available%2Chdr10plus_available_all%2Chas_5_1%2Cshields%2Civi_pseudo_release_date%2Cartists%2Cbudget%2Ccategories%2Ccountry%2Cdescription%2Csynopsis%2Cduration%2Cduration_minutes%2Cgenres%2Cgross_russia%2Cgross_usa%2Cgross_world%2Cimdb_rating%2Civi_rating_10%2Ckp_rating%2Crating%2Cseason%2Corig_title%2Cyear%2Cyears%2Cepisode%2Csubsites_availability%2Csubtitles%2Ccompilation%2Ccompilation_title%2Cdrm_only%2Chas_awards%2Cused_to_be_paid%2Civi_release_date%2Csharing_disabled%2Civi_rating_10_count%2Chas_comments%2Chas_reviews%2Clocalizations%2Cbest_watch_before%2Cthumbs%2Cposters&app_version=870&session=ef75c6824682118185663737_1670526595-09QR1b1flUUV3rsLeQstITw&session_data=eyJ1aWQiOjQ2ODIxMTgxODU2NjM3Mzd9.YqD0BA.Mne1AYKjiS-A-TdZcKYB16jIv8k');
-                    $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
-                    try{
-                        $content = $jsonFormattedResult['result'];
-                        if (isset($content)) {
-                            $this->saveContent($content);
-                            $this->saveGenre($content);
-                            $this->saveCreators($content);
-                            $this->saveRelease($content);
-                            $a++;
-                        }
-                    }catch (Exception  $e){
-
-                    }
-                }
+            foreach ($jsonFormattedResult['data']['projects'] as $contentItem) {
+                $client = new Client();
+                $response = $client->get('https://api.more.tv/v3/app/projects/' . $contentItem['id']);
+                $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
+                $content = $jsonFormattedResult['data'];
+                $this->saveContent($content);
+                $this->saveGenre($content);
+                $this->saveCreators($content);
+                $this->saveRelease($content);
             }
         }
         return redirect('/home');
@@ -83,19 +72,23 @@ class SyncCinemasController extends Controller
     public function saveRelease($item)
     {
         $content = $this->contentRepository->findFromTitle($item['title']);
-        //Забираем или обновляем релиз
+        $client = new Client();
+        $response = $client->get('https://more.tv/api/v4/web/Projects/' . $item['id'] . '/CurrentTrack');
+        $jsonFormattedResult = json_decode($response->getBody()->getContents(), true);
+        $releaseInfo = $jsonFormattedResult['data'];
+
         $isReleaseFound = false;
         foreach ($content->releases as $item) {
-            if ($item->cinema == "IVI") {
+            if ($item->cinema == "MORE") {
                 $isReleaseFound = true;
             }
         }
         if (!$isReleaseFound) {
             $storeRelease = Request::create('POST');
             $storeRelease->request->add(['content_id' => $content->id]);
-            $storeRelease->request->add(['cinema' => 'IVI']);
+            $storeRelease->request->add(['cinema' => 'MORE']);
             $storeRelease->request->add(['type' => 'web']);
-            $storeRelease->request->add(['url' => 'https://www.ivi.ru/player/video/?id=' . $item['id']]);
+            $storeRelease->request->add(['url' => 'https://odysseus.more.tv/player/1788/' . $releaseInfo['hubId'] . '?p2p=0&startAt=0&web_version=2.55.8-eng&autoplay=1']);
             $this->releaseRepository->store($storeRelease);
         }
 
@@ -107,24 +100,25 @@ class SyncCinemasController extends Controller
         $request->request->add(['title' => $item['title']]);
         $request->request->add(['description' => $item['description']]);
         if (isset($item['kp_rating'])) {
-            $request->request->add(['rating' => $item['kp_rating']]);
+            $request->request->add(['rating' => $item['ratingKinopoisk']]);
         }
-        $request->request->add(['restrict' => $item['restrict']]);
-        $request->request->add(['year' => $item['year']]);
-        $request->request->add(['duration' => $item['localizations'][0]['duration']]);
-        if (isset($item['kp_id'])) {
-            $request->request->add(['kinopoisk_id' => $item['kp_id']]);
+        $request->request->add(['restrict' => $item['minAge']]);
+        if (!empty($item['releaseDate'])) {
+            $request->request->add(['year' => Carbon::parse($item['releaseDate'])->year]);
         }
-        $request->request->add(['poster' => $item['posters'][0]['url']]);
+        $request->request->add(['duration' => null]);
+        $request->request->add(['kinopoisk_id' => 0]);
+
+        $request->request->add(['poster' => $item['projectPosterGallery']['JPEG']['W500H710']['url']]);
 
 
-        $country = Country::where('title', Helper::getCountryIvi($item['country']))->first();
+        $country = Country::where('title', $item['countries'][0]['label'])->first();
         if (!empty($country)) {
             $request->request->add(['country_id' => $country->id]);
         }
 
         //Задать категорию
-        $typeContent = $this->getCategory($item['categories']);
+        $typeContent = $this->typeContentRepository->findFromTitle(Helper::getTypeContentMore($item['type']));
         if (!empty($typeContent)) {
             $request->request->add(['type_content_id' => $typeContent->id]);
         }
@@ -142,7 +136,7 @@ class SyncCinemasController extends Controller
         $content = $this->contentRepository->findFromTitle($item['title']);
         //Задать связи с жанрами
         foreach ($item['genres'] as $genre) {
-            $genre = $this->genreRepository->findFromTitle(Helper::getGenreIvi($genre));
+            $genre = $this->genreRepository->findFromTitle(Helper::getGenreMore($genre['id']));
             if (!empty($genre)) {
                 $isExist = $this->contentGenreRepository->isDepencyExist($item['title'], $genre->id);
                 if (!$isExist) {
@@ -160,29 +154,19 @@ class SyncCinemasController extends Controller
     {
         //Забираем актеров и прочих
         $content = $this->contentRepository->findFromTitle($item['title']);
-        $client = new Client();
-        $responseCreators = $client->get('https://api2.ivi.ru/mobileapi/video/persons/v5/?id=' . $item['id']);
-        $creatorsRest = json_decode($responseCreators->getBody()->getContents(), true)['result'];
-        foreach ($creatorsRest as $typeCreator) {
-            foreach ($typeCreator['persons'] as $person) {
+        if (!empty($item['cast'])) {
+            foreach ($item['cast']['shortCast'] as $person) {
                 if (!empty($person['name'])) {
                     $creator = $this->creatorRepository->getByName($person['name']);
                     if (empty($creator)) {
                         $storeCreator = Request::create('POST');
                         $storeCreator->request->add(['name' => $person['name']]);
-                        $storeCreator->request->add(['eng_name' => $person['eng_title']]);
-                        $storeCreator->request->add(['kinopoisk_id' => $person['kp_id']]);
-                        $storeCreator->request->add(['bio' => $person['bio']]);
-                        $avatar = null;
-                        foreach ($person['images'] as $img) {
-                            $avatar = $img['path'];
-                        }
-                        $storeCreator->request->add(['avatar' => $avatar]);
+                        $storeCreator->request->add(['avatar' => $person['photo']]);
                         $this->creatorRepository->store($storeCreator);
                         $creator = $this->creatorRepository->getByName($person['name']);
                     }
                     //Чтоб не было дублей при обновлении связи контента и актеров
-                    $isExist = $this->contentCreatorRepository->isDepencyExist($content['title'], $creator->id);
+                    $isExist = $this->contentCreatorRepository->isDepencyExist($item['title'], $creator->id);
                     if (!$isExist) {
                         $storeContentCreator = Request::create('POST');
                         $storeContentCreator->request->add(['content_id' => $content->id]);
