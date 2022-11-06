@@ -73,7 +73,7 @@ class VkController extends Controller
 
 
         $client = new Client();
-        $response = $client->get('http://localhost:8001/api/profile',
+        $response = $client->get('http://vagontv.ru/api/profile',
             ['headers' => ['Authorization' => 'Bearer ' . $jsonFormattedResult['access_token']]]
         );
 

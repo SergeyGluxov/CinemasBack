@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         $query = http_build_query([
             'client_id' => '5',
-            'redirect_uri' => 'http://localhost:8000',
+            'redirect_uri' => 'http://vagontv.ru',
             'response_type' => 'token',
             'scope' => '',
         ]);
