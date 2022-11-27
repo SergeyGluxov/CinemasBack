@@ -66,7 +66,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/syncPremierFilms', [SyncPremierController::class, 'syncPremierFilms']);
         Route::post('/syncTvigleFilms', [SyncTvigleController::class, 'syncTvigleFilms']);
 
-        Route::resource('/type', TypeContentController::class);
         Route::resource('/content', ContentController::class);
         Route::resource('/genre', GenreController::class);
         Route::resource('/userRole', UserRoleController::class);

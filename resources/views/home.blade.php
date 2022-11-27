@@ -1,4 +1,3 @@
-@extends('adminlte::page')
 
 @section('title', 'Dashboard')
 
@@ -15,7 +14,6 @@
 @section('content')
     <section class="content">
         <div id="app">
-            <content-table-component></content-table-component>
         </div>
     </section>
 @stop
