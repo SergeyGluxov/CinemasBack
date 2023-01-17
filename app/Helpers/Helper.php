@@ -163,6 +163,18 @@ class Helper
     }
 
 
+    public static function getTypeContentRutube(string $value)
+    {
+        switch ($value) {
+            case "Фильм":
+                return "Фильм";
+            case "Сериал":
+                return "Сериал";
+            default:
+                return "Undefined";
+        }
+    }
+
     public static function getTypeContent(int $value)
     {
         switch ($value) {

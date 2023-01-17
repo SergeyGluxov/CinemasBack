@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\SyncCinemas\SyncCinemasController;
 use App\Http\Controllers\Api\SyncCinemas\SyncMoreCinemasController;
 use App\Http\Controllers\Api\SyncCinemas\SyncMoreController;
 use App\Http\Controllers\Api\SyncCinemas\SyncPremierController;
+use App\Http\Controllers\Api\SyncCinemas\SyncRutubeController;
 use App\Http\Controllers\Api\SyncCinemas\SyncTvigleController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
@@ -65,6 +66,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/syncMoreFilms', [SyncMoreCinemasController::class, 'syncMoreFilms']);
         Route::post('/syncPremierFilms', [SyncPremierController::class, 'syncPremierFilms']);
         Route::post('/syncTvigleFilms', [SyncTvigleController::class, 'syncTvigleFilms']);
+        Route::post('/syncRutube', [SyncRutubeController::class, 'syncSmotrim']);
 
         Route::resource('/content', ContentController::class);
         Route::resource('/genre', GenreController::class);
