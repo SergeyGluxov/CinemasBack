@@ -41,7 +41,7 @@ class RegisterRepository
         }
 
         $client = new Client();
-        $response = $client->post('http://localhost:8001/oauth/token',
+        $response = $client->post('http://vagontv.ru/oauth/token',
             [
                 'form_params' => [
                     'client_id' => $request->get('client_id'),

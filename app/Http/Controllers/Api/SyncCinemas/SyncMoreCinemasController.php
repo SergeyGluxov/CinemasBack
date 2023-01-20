@@ -49,7 +49,7 @@ class SyncMoreCinemasController extends Controller
     {
 
         $type = $request->get('type');
-        for ($to = 0; $to < 48; $to += 24) {
+        for ($to = 0; $to < 300; $to += 24) {
             $clientCollection = new Client();
             $responseCollection = $clientCollection->get('https://more.tv/api/v4/web/projects?filter%5Bcategory%5D%5B0%5D=' . $type . '&filter%5BsubscriptionType%5D%5B0%5D=FREE&filter%5BisSeoSuitable%5D=true&sort%5B0%5D=viewTypeId&sort%5B1%5D=-keyRank&page%5Boffset%5D='.$to.'&page%5Blimit%5D=18');
             $jsonFormattedResult = json_decode($responseCollection->getBody()->getContents(), true);

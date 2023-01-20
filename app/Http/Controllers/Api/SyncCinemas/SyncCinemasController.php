@@ -48,7 +48,7 @@ class SyncCinemasController extends Controller
     public function syncIviFilm()
     {
 
-        for ($to = 29; $to < 300; $to += 29) {
+        for ($to = 29; $to < 1500; $to += 29) {
             $clientCollection = new Client();
             $responseCollection = $clientCollection->get('https://api2.ivi.ru/mobileapi/catalogue/v5/?category=14&paid_type=AVOD&from=' . ($to - 29) . '&to=' . $to . '&withpreorderable=true&app_version=870&session=5f50069b8192933799505857_1640229232-0VSsdXnINDlnif4VJDNujuA&session_data=eyJ1aWQiOjgxOTI5MzM3OTk1MDU4NTd9.YNKr9A.s6dN769-1ipCvd3mfwm2vrPOb-8');
             $jsonFormattedResult = json_decode($responseCollection->getBody()->getContents(), true);
