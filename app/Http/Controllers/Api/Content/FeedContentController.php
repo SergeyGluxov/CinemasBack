@@ -16,13 +16,14 @@ class FeedContentController extends Controller
         $this->contentGenreRepository = $contentGenreRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->contentGenreRepository->all();
+        return $this->contentGenreRepository->all($request);
     }
 
     public function show($id)
-    {}
+    {
+    }
 
     public function store(Request $request)
     {

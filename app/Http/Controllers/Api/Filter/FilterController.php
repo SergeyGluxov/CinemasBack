@@ -78,7 +78,8 @@ class FilterController extends Controller
             new YearsFilter(2018, "2018"),
             new YearsFilter(2020, "2020"),
             new YearsFilter(2021, "2021"),
-            new YearsFilter(2022, "2022"));
+            new YearsFilter(2022, "2022"),
+            new YearsFilter(2023, "2023"));
 
         $array = [
 

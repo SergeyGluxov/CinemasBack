@@ -1,0 +1,396 @@
+[
+    {
+        "name": "Первый канал HD",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_pervy_channel.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": null,
+        "adTagVast": "",
+        "scheduleName": "pervy",
+        "category": "News"
+    },
+    {
+        "name": "Россия 1 HD",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_russia_1.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "russia1/vitrinatv_web",
+            "api": "api",
+            "company": "vgtrk",
+            "file": "russia1_as_array.json",
+            "egress_version": 905267
+        },
+        "adTagVast": "",
+        "scheduleName": "rossia1",
+        "category": "News"
+    },
+    {
+        "name": "Россия 24 HD",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_russia_24.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "russia24/vitrinatv_web",
+            "api": "api",
+            "company": "vgtrk",
+            "file": "russia24_as_array.json",
+            "egress_version": 905267
+        },
+        "adTagVast": "",
+        "scheduleName": "rossia24",
+        "category": "News"
+    },
+    {
+        "name": "СТС",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_sts.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "ctc_ext/vitrinatv_web",
+            "api": "api",
+            "company": "ctc",
+            "file": "ctc_as_array.json",
+            "egress_version": 905345
+        },
+        "adTagVast": "",
+        "scheduleName": "sts",
+        "category": "Entertainment"
+    },
+    {
+        "name": "ТНТ",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_tnt.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "gpm_tnt_v2/tnt/vitrinatv_web",
+            "api": "api",
+            "company": "gpm-tnt",
+            "file": "tnt4_as_array.json",
+            "egress_version": 1694275
+        },
+        "adTagVast": "",
+        "scheduleName": "tnt",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Муз-ТВ",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_muztv.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "muztv/muztv/vitrinatv_web",
+            "api": "api",
+            "company": "muztv",
+            "file": "muztv_as_array.json",
+            "egress_version": 905771
+        },
+        "adTagVast": "",
+        "scheduleName": "muztv",
+        "category": "Music"
+    },
+    {
+        "name": "НТВ",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_ntv.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "ntv_v2/ntv/vitrinatv_web",
+            "api": "api",
+            "company": "ntv",
+            "file": "ntv4_as_array.json",
+            "egress_version": 1694395
+        },
+        "adTagVast": "",
+        "scheduleName": "ntv",
+        "category": "Entertainment"
+    },
+    {
+        "name": "5 канал",
+        "logo": "https://i.ibb.co/B2P8MW4/ic-5ch.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "5tv/vitrinatv_web",
+            "api": "api",
+            "company": "tv5",
+            "file": "tv-5_as_array.json",
+            "egress_version": 1427757
+        },
+        "adTagVast": "",
+        "scheduleName": "5kanal-ru",
+        "category": "Entertainment"
+    },
+    {
+        "name": "ТВЦ",
+        "logo": "https://i.ibb.co/zsNT7Yr/ic-tvc.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "tvc/tvc/vitrinatv_web",
+            "api": "api",
+            "company": "tvc",
+            "file": "tvc_as_array.json",
+            "egress_version": 1441095
+        },
+        "adTagVast": "",
+        "scheduleName": "tvcentr",
+        "category": "Entertainment"
+    },
+    {
+        "name": "СПАС",
+        "logo": "https://i.ibb.co/0Zgc0xJ/ic-spas.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "spas/vitrinatv_web",
+            "api": "api",
+            "company": "spas",
+            "file": "spas_as_array.json",
+            "egress_version": 1435503
+        },
+        "adTagVast": "",
+        "scheduleName": "spas",
+        "category": "Religion"
+    },
+    {
+        "name": "ТВ3",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_tv3.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "tv3_v2/tv3/vitrinatv_web",
+            "api": "api",
+            "company": "gpm-tv3",
+            "file": "tv34_as_array.json",
+            "egress_version": 1694273
+        },
+        "adTagVast": "",
+        "scheduleName": "tv3-ru",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Домашний",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_domashnyy.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "domashniy_ext/vitrinatv_web",
+            "api": "api",
+            "company": "dom",
+            "file": "ctc-dom_as_array.json",
+            "egress_version": 905431
+        },
+        "adTagVast": "",
+        "scheduleName": "domashny",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Пятница!",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_friday.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "gpm_friday_v2/friday/vitrinatv_web",
+            "api": "api",
+            "company": "gpm-friday",
+            "file": "friday4_as_array.json",
+            "egress_version": 1666621
+        },
+        "adTagVast": "",
+        "scheduleName": "piatnica",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Звезда",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_zvezda.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "zvezda/tvzvezda/vitrinatv_web",
+            "api": "api",
+            "company": "zvezda",
+            "file": "zvezda_as_array.json",
+            "egress_version": 905771
+        },
+        "adTagVast": "",
+        "scheduleName": "zvezda",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Мир",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_mir.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "mir/mir/vitrinatv_web",
+            "api": "api",
+            "company": "mtrkmir",
+            "file": "mir_as_array.json",
+            "egress_version": 909777
+        },
+        "adTagVast": "",
+        "scheduleName": "mir",
+        "category": "Entertainment"
+    },
+    {
+        "name": "ЧЕ",
+        "logo": "https://www.cableman.ru/sites/default/files/che_0.png?1534317842",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "che_ext/vitrinatv_web",
+            "api": "api",
+            "company": "che",
+            "file": "ctc-che_as_array.json",
+            "egress_version": 1691641
+        },
+        "adTagVast": "",
+        "scheduleName": "che",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Известия",
+        "logo": "https://vagontv.github.io/vagon/logo/ic_izvestia.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "iz/vitrinatv_web",
+            "api": "api",
+            "company": "iz",
+            "file": "iz_as_array.json",
+            "egress_version": 1691621
+        },
+        "adTagVast": "",
+        "scheduleName": "izvestia",
+        "category": "News"
+    },
+    {
+        "name": "СТС Love",
+        "logo": "https://i.ibb.co/TwdPBND/ic-sts-love.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "ctc_love_ext/vitrinatv_web",
+            "api": "api",
+            "company": "ctclove",
+            "file": "ctc-love_as_array.json",
+            "egress_version": 1691637
+        },
+        "adTagVast": "",
+        "scheduleName": "sts-love",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Ю",
+        "logo": "https://epg.iptvx.one/icn/yu.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "u_ott_v2/u/vitrinatv_web",
+            "api": "api",
+            "company": "utv",
+            "file": "u_ott_as_array.json",
+            "egress_version": 1695135
+        },
+        "adTagVast": "",
+        "scheduleName": "yu",
+        "category": "Entertainment"
+    },
+    {
+        "name": "Солнце!",
+        "logo": "https://epg.iptvx.one/icn/yu.png",
+        "sources": [
+            {
+                "owner": "other",
+                "url": ""
+            }
+        ],
+        "vitrina_info": {
+            "code_name": "thesun_v2/solnce/vitrinatv_web/63987dcb40ced",
+            "api": "api",
+            "company": "solntse",
+            "file": "solntse_as_array.json",
+            "egress_version": 1696857
+        },
+        "adTagVast": "",
+        "scheduleName": "yu",
+        "category": "Entertainment"
+    }
+]

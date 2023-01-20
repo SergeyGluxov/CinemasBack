@@ -60,13 +60,27 @@ class ReleaseRepository
             return response('Успешно удалено!', 200);
     }
 
-    public function getContentRelease(Request $request){
-        $content = Content::where('id', $request->get('content_id'))->first();
-        ReleaseResource::withoutWrapping();
-        return ReleaseResource::collection($content->releases);
+    public function getContentRelease(Request $request)
+    {
+        $content = null;
+        if ($request->header("BUILD") >= 1) {
+            $content = Content::where('id', $request->get('content_id'))->first();
+        } else {
+            $content = Content::where('id', '=', $request->get('content_id'))->whereHas('releases', function ($query) {
+                $query->where('cinema', '!=', 'RUTUBE');
+            })->first();
+        }
+        if (empty($content)) {
+            ReleaseResource::withoutWrapping();
+            return ReleaseResource::collection([]);
+        } else {
+            ReleaseResource::withoutWrapping();
+            return ReleaseResource::collection($content->releases);
+        }
     }
 
-    public function getEpisodeRelease(Request $request){
+    public function getEpisodeRelease(Request $request)
+    {
         $episode = Episode::where('id', $request->get('episode_id'))->first();
         ReleaseResource::withoutWrapping();
         return ReleaseResource::collection($episode->releases);
